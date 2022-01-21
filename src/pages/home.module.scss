@@ -1,5 +1,5 @@
 .mainBackground {
-  background: linear-gradient(257.2deg, #9482FE 0%, #3988F6 101.58%);
+  background: linear-gradient(257.2deg, #9482fe 0%, #3988f6 101.58%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,9 +14,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: blue;
 
-    
+    div:last-child {
+      display: flex;
+      align-items: center;
+    }
+
+    button {
+      margin: 0.4rem;
+      background: none;
+      border: none;
+    }
   }
 }
-
