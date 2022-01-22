@@ -1,0 +1,33 @@
+.outlineWhite {
+  padding: 1rem;
+  color: var(--background);
+  background: none;
+
+  font-family: "Chivo";
+  font-size: 0.75rem;
+  border: 2px solid var(--background) !important;
+  border-radius: 8px;
+
+  transition: 0.6s;
+}
+
+.outlineWhite:hover {
+  background: var(--primary);
+}
+
+.whiteButton {
+  padding: 1rem;
+  color: var(--primary);
+  background: var(--background);
+
+  font-family: "Chivo";
+  font-size: 0.75rem;
+  border: 2px solid var(--background) !important;
+  border-radius: 8px;
+
+  transition: 0.6s;
+}
+
+.whiteButton:hover {
+  background: var(--lightPrimary);
+}

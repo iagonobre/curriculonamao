@@ -1,29 +1,467 @@
 .mainBackground {
+  width: 100%;
   background: linear-gradient(257.2deg, #9482fe 0%, #3988f6 101.58%);
   display: flex;
   flex-direction: column;
   align-items: center;
+}
 
-  div:first-child {
-    width: 70%;
-  }
+.contentBackground {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  background-image: url("../../public/assets/woman-image.png");
+  background-repeat: no-repeat;
+  background-position-x: right;
+  background-position-y: bottom;
 
   header {
+    width: 70%;
     margin-top: 3rem;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
+    nav {
+      margin-left: 1rem;
+      a {
+        margin-left: 1rem;
+      }
+
+      a:first-child {
+        padding: 1rem;
+        color: var(--background);
+        background: none;
+
+        font-family: "Chivo";
+        font-size: 0.75rem;
+        border: 2px solid var(--background) !important;
+        border-radius: 8px;
+
+        transition: 0.6s;
+      }
+      a:first-child:hover {
+        background: var(--primaryDark);
+      }
+
+      a:last-child {
+        padding: 1rem;
+        color: var(--primary);
+        background: var(--background);
+
+        font-family: "Chivo";
+        font-size: 0.75rem;
+        border: 2px solid var(--background) !important;
+        border-radius: 8px;
+
+        transition: 0.6s;
+      }
+
+      a:last-child:hover {
+        background: var(--lightPrimary);
+      }
+    }
+
     div:last-child {
       display: flex;
       align-items: center;
     }
 
-    button {
-      margin: 0.4rem;
-      background: none;
-      border: none;
+    @media (max-width: 1080px) {
+      width: 80%;
+
+      nav {
+        a:first-child {
+          display: none;
+        }
+      }
+
+      div {
+        div {
+          display: none;
+        }
+      }
     }
   }
+
+  @media (max-width: 1080px) {
+    background-image: none;
+  }
+}
+
+.iconButton {
+  margin: 0.4rem;
+  background: none;
+  border: none;
+}
+
+.createAccount {
+  width: 70%;
+  margin: 8rem 0rem 8rem 0rem;
+
+  a:first-child {
+    padding: 1.2rem;
+    border-radius: 8px;
+    background: none;
+    color: var(--background);
+    font-family: "Chivo";
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid var(--background);
+
+    transition: 0.6s;
+  }
+
+  a:first-child:hover {
+    background: var(--primaryDark);
+  }
+
+  h1 {
+    max-width: 50%;
+    color: var(--background);
+    font-size: 2rem;
+    font-weight: 500;
+  }
+
+  p {
+    margin-top: 1rem;
+    max-width: 50%;
+    color: var(--shapeLight);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-family: "Chivo";
+  }
+
+  a:last-child {
+    margin-left: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    @media (max-width: 720px) {
+      margin-left: 0rem;
+      margin-top: 2rem;
+    }
+
+    small {
+      font-size: 1rem;
+      font-family: "Chivo";
+      color: var(--shapeLight);
+      white-space: nowrap;
+      margin-left: 1rem;
+    }
+  }
+
+  div {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    @media (max-width: 720px) {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 1080px) {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    h1 {
+      max-width: 100%;
+    }
+
+    p {
+      max-width: 100%;
+    }
+  }
+}
+
+.cardSection {
+  width: 100%;
+  background-color: var(--shape);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardBackground {
+  width: 70%;
+
+  @media (max-width: 1080px) {
+    width: 90%;
+  }
+}
+
+.cardHeader {
+  width: 100%;
+  margin-top: 4rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  div {
+    width: 50%;
+
+    div {
+      border-radius: 8px;
+      width: 4rem;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    @media (max-width: 720px) {
+      margin: 0 auto;
+      margin-top: 1rem;
+      width: 90%;
+    }
+  }
+
+  p {
+    margin-top: 0.5rem;
+    font-family: "Chivo";
+    font-size: 1rem;
+  }
+
+  @media (max-width: 720px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.cardContainer {
+  margin: 4rem 0rem 4rem 0rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2.75rem;
+
+  @media (max-width: 1080px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+}
+
+.card {
+  height: 23rem;
+  width: 100%;
+  padding: 2.25rem;
+
+  background: var(--background);
+  border-radius: 8px;
+  border: 2px solid var(--shapeLight);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  img {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  h4 {
+    margin-top: 1.25rem;
+    font-size: 2.1rem;
+  }
+
+  @media (max-width: 1080px) {
+    height: 18rem;
+  }
+}
+
+.line {
+  width: 100%;
+  height: 2px;
+  background: var(--shapeLight);
+}
+
+.lineBlue {
+  width: 100%;
+  height: 2px;
+  background: #5499fb;
+}
+
+.aboutContent {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  div:first-child {
+    width: 70%;
+    margin: 3rem 0rem 3rem 0rem;
+
+    h3 {
+      text-align: right;
+    }
+
+    div:last-child {
+      margin-top: 3rem;
+
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 2rem;
+
+      @media (max-width: 1080px) {
+        grid-template-columns: 1fr;
+        grid-template-rows: 0fr 0fr;
+        align-items: center;
+
+        img {
+          margin: 0 auto;
+          width: 100%;
+        }
+      }
+    }
+
+    @media (max-width: 1080px) {
+      width: 90%;
+      h3 {
+        text-align: left;
+      }
+    }
+  }
+
+  p {
+    text-align: justify;
+    font-family: "Chivo";
+    font-size: 0.98rem;
+  }
+}
+
+.recapContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-image: url("../../public/assets/shape.png");
+  background-repeat: no-repeat;
+  background-position: bottom;
+
+  button {
+    background: var(--primary);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    color: var(--background);
+
+    transition: 0.6s;
+  }
+
+  button:hover {
+    background: var(--primaryDark);
+  }
+
+  div:first-child {
+    width: 70%;
+    margin: 3rem 0rem 3rem 0rem;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+
+    div {
+      text-align: right;
+
+      button {
+        margin-top: 3rem;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      width: 90%;
+      grid-template-columns: 1fr;
+      grid-template-rows: 0.5fr 0.5fr;
+
+      img {
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      div {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.footerContainer {
+  width: 100%;
+  background: var(--primary);
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  div:last-child {
+    width: 70%;
+    margin: 1rem 0rem 1rem 0rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    color: var(--background);
+    font-family: "Chivo";
+    font-weight: 300;
+  }
+
+  @media (max-width: 1080px) {
+    div:last-child {
+      flex-direction: column;
+    }
+  }
+}
+
+.footerNavigation {
+  width: 70%;
+  margin: 2rem 0rem 2rem 0rem;
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+
+  nav a {
+    margin: 0rem 1rem 0rem 1rem;
+    font-size: 1rem;
+    font-family: "Chivo";
+    color: var(--background);
+  }
+
+  @media (max-width: 1080px) {
+    flex-direction: column;
+    height: 10rem;
+  }
+}
+
+.buttonUp {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--shape);
+  border-radius: 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
