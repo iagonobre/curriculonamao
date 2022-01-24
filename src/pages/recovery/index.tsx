@@ -28,7 +28,7 @@ export default function Account() {
 
         <form action="">
           <Input type="email" id="email" placeholder="Digite o seu e-mail" />
-          <Button>ENTRAR</Button>
+          <Button>TESTE</Button>
         </form>
       </AccountBox>
     </div>
