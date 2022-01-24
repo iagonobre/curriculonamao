@@ -27,8 +27,10 @@ export default function Account() {
         </button>
 
         <form action="">
+          <img src="/assets/recovery.svg" alt="" />
+          <p>Insira o e-mail <br /> associado a sua conta</p>
           <Input type="email" id="email" placeholder="Digite o seu e-mail" />
-          <Button>TESTE</Button>
+          <Button>CONTINUAR</Button>
         </form>
       </AccountBox>
     </div>
