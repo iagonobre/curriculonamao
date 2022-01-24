@@ -1,0 +1,39 @@
+.inputStyle {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0.95rem;
+  border: 2px solid var(--primary);
+  background: var(--background);
+  border-radius: 8px;
+
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: var(--background);
+  }
+
+  svg {
+    color: var(--primary);
+  }
+
+  input::placeholder {
+    color: var(--primary);
+  }
+}
+
+.focused {
+  border: 2px solid var(--shapeDark);
+
+  svg {
+    color: var(--shapeDark);
+  }
+
+  input::placeholder {
+    color: var(--shapeDark);
+  }
+}

@@ -4,7 +4,7 @@ type AcessibilityScrollProps = {
   onlyDevices?: boolean;
 }
 
-export function AcessibilityScroll({ onlyDevices }) {
+export function AcessibilityScroll({ onlyDevices = false }) {
   return (
     <div className={`${onlyDevices ? `${styles.acessibilityScroll} ${styles.onlyDevices}` : styles.acessibilityScroll}`} >
       <button className={styles.iconButton}>

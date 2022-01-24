@@ -2,19 +2,19 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 import styles from './style.module.scss';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  styleType: "outlineWhite" | "whiteButton";
+  styleType?: "outline";
   children: ReactNode;
 }
 
-export function Button({ styleType, children }: ButtonProps) {
+export function Button({ styleType, children, ...props }: ButtonProps) {
   return (
-    styleType === "outlineWhite" ?
+    styleType === "outline" ?
       (
-        <button className={styles.outlineWhite}>
+        <button className={styles.outline} {...props}>
           {children}
         </button>
       ) : (
-        <button className={styles.whiteButton}>
+        <button className={styles.buttonStyle} {...props}>
           {children}
         </button>
       )

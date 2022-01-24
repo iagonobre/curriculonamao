@@ -1,0 +1,47 @@
+.accountContainer {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(257.2deg, #9482fe 0%, #3988f6 101.58%);
+
+  svg {
+    color: var(--primary);
+  }
+
+  button:first-child {
+    display: flex;
+    border: none;
+    background: none;
+  }
+
+  form {
+    width: 100%;
+
+    div {
+      margin-top: 1.5rem;
+    }
+
+    button {
+      margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+.recoveryStyle {
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+
+  a {
+    font-family: "Chivo";
+    font-size: 1rem;
+    text-decoration: underline;
+    color: var(--primary);
+  }
+}
