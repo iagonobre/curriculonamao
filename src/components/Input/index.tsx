@@ -1,5 +1,5 @@
-import { InputHTMLAttributes, ReactNode, useState } from 'react';
-import { FiLock, FiMail } from 'react-icons/fi'
+import { InputHTMLAttributes, useState } from 'react';
+import { FiLock, FiMail, FiUser } from 'react-icons/fi'
 
 import styles from './style.module.scss';
 
@@ -16,7 +16,11 @@ export function Input({ type, onFocus, ...props }: InputProps) {
       {type === "email" ? (
         <FiMail size={22} />
       ) : (
-        <FiLock size={22} />
+        type === "text" ? (
+          <FiUser size={22} />
+        ) : (
+          <FiLock size={22} />
+        )
       )}
     </div>
   )

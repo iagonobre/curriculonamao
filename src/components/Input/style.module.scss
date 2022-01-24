@@ -22,6 +22,8 @@
   }
 
   input::placeholder {
+    font-family: "Chivo";
+    font-size: 1rem;
     color: var(--primary);
   }
 }
@@ -29,11 +31,11 @@
 .focused {
   border: 2px solid var(--shapeDark);
 
-  svg {
+  input::placeholder {
     color: var(--shapeDark);
   }
 
-  input::placeholder {
+  svg {
     color: var(--shapeDark);
   }
 }
