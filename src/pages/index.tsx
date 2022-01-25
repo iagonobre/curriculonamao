@@ -34,7 +34,7 @@ export default function Home() {
                   </button>
                 </div>
                 <nav>
-                  <Link href="/account"><a>CRIAR CONTA</a></Link>
+                  <Link href="/account/create"><a>CRIAR CONTA</a></Link>
                   <Link href="/account"><a>ENTRAR</a></Link>
                 </nav>
               </div>
