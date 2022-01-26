@@ -4,7 +4,28 @@
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  padding: 2rem 0rem 2rem 0rem;
+  align-items: center;
 
+  padding: 1rem 15% 1rem 15%;
   background: linear-gradient(257.2deg, #9482FE 0%, #3988F6 101.58%);
+
+  button {
+    background: none;
+    border: none;
+    margin: 0.5rem;
+  }
+}
+
+.dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+  border: 3px solid var(--background);
+  border-radius: 29px;
+
+  list-style: none;
+  background: none;
 }
