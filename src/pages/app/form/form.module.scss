@@ -1,0 +1,22 @@
+.container {
+  padding: 0rem 15% 0rem 15%;
+
+  display: flex;
+}
+
+.form {
+  width: 70%;
+}
+
+.next {
+  margin-left: 10rem;
+  background: blue;
+}
+
+.inputContainer {
+  display: flex;
+
+  div:first-child {
+    margin-right: 2rem;
+  }
+}

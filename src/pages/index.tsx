@@ -1,9 +1,12 @@
 import Link from 'next/link';
 import { AcessibilityScroll } from '../components/AccessibilityScroll';
 import { Button } from '../components/Button';
+import { useFont } from '../hooks/font';
 import styles from './home.module.scss';
 
 export default function Home() {
+  const { decreaseFont, increaseFont, turnNormalFont } = useFont();
+
   return (
     <>
       <AcessibilityScroll onlyDevices />
@@ -20,13 +23,13 @@ export default function Home() {
               </div>
               <div>
                 <div>
-                  <button className={styles.iconButton}>
+                  <button onClick={() => increaseFont()} className={styles.iconButton}>
                     <img src="/assets/text-icon-plus.svg" alt="Aumentar Textos" />
                   </button>
-                  <button className={styles.iconButton}>
+                  <button onClick={() => turnNormalFont()} className={styles.iconButton}>
                     <img src="/assets/text-icon.svg" alt="Textos em tamanho padrão" />
                   </button>
-                  <button className={styles.iconButton}>
+                  <button onClick={() => decreaseFont()} className={styles.iconButton}>
                     <img src="/assets/text-icon-less.svg" alt="Diminuir Textos" />
                   </button>
                   <button className={styles.iconButton}>

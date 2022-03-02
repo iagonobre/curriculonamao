@@ -3,7 +3,7 @@ import { FiLock, FiMail, FiUser } from 'react-icons/fi'
 
 import styles from './style.module.scss';
 
-interface InputProps extends InputHTMLAttributes<HTMLButtonElement> {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 

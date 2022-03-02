@@ -4,7 +4,7 @@ import { Header } from '../../components/Header';
 import { Button } from '../../components/Button';
 
 export default function HomeApp() {
-  const haveCurriculum = true;
+  const haveCurriculum = false;
 
   return (
     <>
