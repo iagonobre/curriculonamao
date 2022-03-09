@@ -192,12 +192,125 @@ export default function Form() {
 
           {step === 1 && (
             <>
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Escreva qual o seu cargo ou área de interesse"
+                  title="Objetivo"
+                  id="objetivo"
+                  {...register("objetivo")}
+                />
+              </div>
 
+              <h3>Experiência Profissional</h3>
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Márcio Calçados"
+                  title="Nome da empresa"
+                  id="nomeempresa"
+                  {...register("nomeempresa")}
+                />
+                </div>
+
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Gerente de Vendas"
+                  title="Cargo ou Posição"
+                  id="cargo"
+                  {...register("cargo")}
+                />
+                </div>
+
+                <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="DD/MM/AAAA"
+                  title="Início"
+                  id="inicio"
+                  {...register("inicio")}
+                />
+
+                  <InputForm
+                  type="text"
+                  placeholder="DD/MM/AAAA"
+                  title="Fim"
+                  id="fim"
+                  {...register("fim")}
+                />
+              </div>
+
+               <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Descreva as atividades mais importantes que você exerceu"
+                  title="Descrição:"
+                  id="descricao"
+                  {...register("descricao")}
+                />
+              </div>
             </>
           )}
 
           {step === 2 && (
             <>
+            <h3>Formação Acadêmica</h3>
+            <div className={styles.inputContainer}>
+                <SelectForm
+                  title="Tipo ou nível acadêmico"
+                  id="nivelacademico"
+                  {...register("nivelacademico")}
+                >
+                  <option value="" disabled selected>Selecionar</option>
+                  <option value="Ensino Fundamental I">Ensino Fundamental I</option>
+                  <option value="Ensino Fundamental II">Ensino Fundamental II</option>
+                  <option value="Licenciatura">Licenciatura</option>
+                  <option value="Graduação">Graduação</option>
+                  <option value="Pós-graduação">Pós-graduação</option>
+                  <option value="Mestrado">Mestrado</option>
+                  <option value="Doutorado">Doutorado</option>
+                  <option value="PHD">PHD</option>
+                </SelectForm>
+            </div>
+
+            <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Instituto Federal do Rio Grande do Norte"
+                  title="Nome da Instituição"
+                  id="nomeinstituicao"
+                  {...register("nomeinstituicao")}
+                />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Gerente de Vendas"
+                  title="Curso"
+                  id="curso"
+                  {...register("curso")}
+                />
+              </div>
+
+            <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="DD/MM/AAAA"
+                  title="Início"
+                  id="inicio"
+                  {...register("inicio")}
+                />
+
+                  <InputForm
+                  type="text"
+                  placeholder="DD/MM/AAAA"
+                  title="Fim"
+                  id="fim"
+                  {...register("fim")}
+                />
+            </div>
 
             </>
           )}
