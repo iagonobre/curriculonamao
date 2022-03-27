@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import * as yup from "yup";
 
 export default function Form() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
 
   const useYupValidationResolver = (validationSchema) => useCallback(async (data) => {
     try {
@@ -211,7 +211,7 @@ export default function Form() {
                   id="nomeempresa"
                   {...register("nomeempresa")}
                 />
-                </div>
+              </div>
 
               <div className={styles.inputContainer}>
                 <InputForm
@@ -221,9 +221,9 @@ export default function Form() {
                   id="cargo"
                   {...register("cargo")}
                 />
-                </div>
+              </div>
 
-                <div className={styles.inputContainer}>
+              <div className={styles.inputContainer}>
                 <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
@@ -232,7 +232,7 @@ export default function Form() {
                   {...register("inicio")}
                 />
 
-                  <InputForm
+                <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Fim"
@@ -241,7 +241,7 @@ export default function Form() {
                 />
               </div>
 
-               <div className={styles.inputContainer}>
+              <div className={styles.inputContainer}>
                 <InputForm
                   type="text"
                   placeholder="Descreva as atividades mais importantes que você exerceu"
@@ -255,8 +255,8 @@ export default function Form() {
 
           {step === 2 && (
             <>
-            <h3>Formação Acadêmica</h3>
-            <div className={styles.inputContainer}>
+              <h3>Formação Acadêmica</h3>
+              <div className={styles.inputContainer}>
                 <SelectForm
                   title="Tipo ou nível acadêmico"
                   id="nivelacademico"
@@ -272,9 +272,9 @@ export default function Form() {
                   <option value="Doutorado">Doutorado</option>
                   <option value="PHD">PHD</option>
                 </SelectForm>
-            </div>
+              </div>
 
-            <div className={styles.inputContainer}>
+              <div className={styles.inputContainer}>
                 <InputForm
                   type="text"
                   placeholder="Instituto Federal do Rio Grande do Norte"
@@ -294,7 +294,7 @@ export default function Form() {
                 />
               </div>
 
-            <div className={styles.inputContainer}>
+              <div className={styles.inputContainer}>
                 <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
@@ -303,27 +303,160 @@ export default function Form() {
                   {...register("inicio")}
                 />
 
-                  <InputForm
+                <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Fim"
                   id="fim"
                   {...register("fim")}
                 />
-            </div>
+              </div>
 
             </>
           )}
 
           {step === 3 && (
             <>
+              <h3>Curso de aperfeiçoamento</h3>
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Gerente de Vendas"
+                  title="Curso de aperfeiçoamento"
+                  id="cursodeaperfeicoamento"
+                  {...register("cursodeaperfeicoamento")}
+                />
+              </div>
 
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Instituto Federal do Rio Grande do Norte"
+                  title="Nome da Instituição"
+                  id="nomeinstituicao"
+                  {...register("nomeinstituicao")}
+                />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <SelectForm
+                  title="Nível de Conhecimento"
+                  id="nivelconhecimento"
+                  {...register("nivelconhecimento")}
+                >
+                  <option value="" disabled selected>Selecionar</option>
+                  <option value="Iniciante">Iniciante</option>
+                  <option value="Intermediario">Intermediário</option>
+                  <option value="Avançado">Avançado</option>
+                </SelectForm>
+              </div>
+
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="20h"
+                  title="Carga horária"
+                  id="cargahoraria"
+                  {...register("cargahoraria")}
+                />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="DD/MM/AAAA"
+                  title="Início"
+                  id="inicio"
+                  {...register("inicio")}
+                />
+
+                <InputForm
+                  type="text"
+                  placeholder="DD/MM/AAAA"
+                  title="Fim"
+                  id="fim"
+                  {...register("fim")}
+                />
+              </div>
+
+              <h3>Habilidades</h3>
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Experiência em Photoshop"
+                  title="Nome da Habilidade, Tecnologia ou Ferramenta"
+                  id="nomehabilidade"
+                  {...register("nomehabilidade")}
+                />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <SelectForm
+                  title="Nível de Conhecimento"
+                  id="nivelconhecimento"
+                  {...register("nivelconhecimento")}
+                >
+                  <option value="" disabled selected>Selecionar</option>
+                  <option value="Iniciante">Iniciante</option>
+                  <option value="Intermediario">Intermediário</option>
+                  <option value="Avançado">Avançado</option>
+                </SelectForm>
+              </div>
             </>
           )}
 
           {step === 4 && (
             <>
+              <h3>Informações sobre a deficiência</h3>
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="299.3"
+                  title="Número do CID:*"
+                  id="CID"
+                  {...register("CID")}
+                />
+              </div>
 
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Perda auditiva parcial"
+                  title="Grau de deficiência:*"
+                  id="graudedeficiencia"
+                  {...register("graudedeficiencia")}
+                />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Não preciso de equipamento ou adaptações ou preciso de..."
+                  title="Equipamento ou adaptações necessárias* "
+                  id="equipamento"
+                  {...register("equipamento")}
+                />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Não tenho limitações cotidianas ou tenho limitações com..."
+                  title="Limitações cotidianas*"
+                  id="limitacoes"
+                  {...register("limitacoes")}
+                />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <InputForm
+                  type="text"
+                  placeholder="Escreva aqui"
+                  title="Informações adicionais*"
+                  id="infoadicionais"
+                  {...register("infoadicionais")}
+                />
+              </div>
             </>
           )}
 
