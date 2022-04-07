@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import * as yup from "yup";
 
 export default function Form() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(0);
 
   const useYupValidationResolver = (validationSchema) => useCallback(async (data) => {
     try {
@@ -207,7 +207,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="Márcio Calçados"
-                  title="Nome da empresa"
+                  title="Nome da empresa*"
                   id="nomeempresa"
                   {...register("nomeempresa")}
                 />
@@ -217,7 +217,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="Gerente de Vendas"
-                  title="Cargo ou Posição"
+                  title="Cargo ou Posição*"
                   id="cargo"
                   {...register("cargo")}
                 />
@@ -227,7 +227,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
-                  title="Início"
+                  title="Início*"
                   id="inicio"
                   {...register("inicio")}
                 />
@@ -245,7 +245,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="Descreva as atividades mais importantes que você exerceu"
-                  title="Descrição:"
+                  title="Descrição:*"
                   id="descricao"
                   {...register("descricao")}
                 />
@@ -258,7 +258,7 @@ export default function Form() {
               <h3>Formação Acadêmica</h3>
               <div className={styles.inputContainer}>
                 <SelectForm
-                  title="Tipo ou nível acadêmico"
+                  title="Tipo ou nível acadêmico*"
                   id="nivelacademico"
                   {...register("nivelacademico")}
                 >
@@ -278,7 +278,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="Instituto Federal do Rio Grande do Norte"
-                  title="Nome da Instituição"
+                  title="Nome da Instituição*"
                   id="nomeinstituicao"
                   {...register("nomeinstituicao")}
                 />
@@ -298,7 +298,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
-                  title="Início"
+                  title="Início*"
                   id="inicio"
                   {...register("inicio")}
                 />
@@ -306,7 +306,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
-                  title="Fim"
+                  title="Término*"
                   id="fim"
                   {...register("fim")}
                 />
@@ -365,7 +365,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
-                  title="Início"
+                  title="Início*"
                   id="inicio"
                   {...register("inicio")}
                 />
@@ -373,7 +373,7 @@ export default function Form() {
                 <InputForm
                   type="text"
                   placeholder="DD/MM/AAAA"
-                  title="Fim"
+                  title="Término*"
                   id="fim"
                   {...register("fim")}
                 />
