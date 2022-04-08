@@ -1,15 +1,20 @@
-import { InputForm } from '../../../components/InputForm';
+
 import { Header } from '../../../components/Header';
 import styles from './form.module.scss';
 
 import { useForm } from "react-hook-form";
+
 import { SelectForm } from '../../../components/SelectForm';
+import { CheckboxForm } from '../../../components/CheckboxForm';
+import { InputForm } from '../../../components/InputForm';
+
 import { useCallback, useState } from 'react';
 
 import * as yup from "yup";
 
 export default function Form() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(0);
+  const [states, setStates] = useState<String[]>();
 
   const useYupValidationResolver = (validationSchema) => useCallback(async (data) => {
     try {
@@ -72,6 +77,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Ana Maria da Silva"
                   title="Nome Completo*"
@@ -79,6 +85,7 @@ export default function Form() {
                   {...register("name")}
                 />
                 <InputForm
+                  inputSize="middle"
                   type="date"
                   title="Data de Nascimento*"
                   id="date"
@@ -88,6 +95,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="email"
                   placeholder="anamariasilva@gmail.com"
                   title="E-mail*"
@@ -95,6 +103,7 @@ export default function Form() {
                   {...register("email")}
                 />
                 <InputForm
+                  inputSize="middle"
                   type="tel"
                   placeholder="(DD) 99999-9999"
                   title="Telefone*"
@@ -130,6 +139,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="small"
                   type="text"
                   placeholder="99999-999"
                   title="CEP"
@@ -138,6 +148,7 @@ export default function Form() {
                 />
 
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Avenida Machado de Assis"
                   title="Rua"
@@ -221,6 +232,14 @@ export default function Form() {
                   id="cargo"
                   {...register("cargo")}
                 />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <CheckboxForm
+                  id="namee"
+                >
+                  Experiência em andamento
+                </CheckboxForm>
               </div>
 
               <div className={styles.inputContainer}>
