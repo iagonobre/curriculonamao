@@ -13,7 +13,7 @@ import { useCallback, useState } from 'react';
 import * as yup from "yup";
 
 export default function Form() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
 
   const [states, setStates] = useState<String[]>();
 
@@ -128,6 +128,7 @@ export default function Form() {
                 </SelectForm>
 
                 <InputForm
+                  inputSize="large"
                   type="url"
                   placeholder="https://www.linkedin.com/in/ana"
                   title="LinkedIn"
@@ -161,6 +162,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Vila Mariana"
                   title="Bairro*"
@@ -169,6 +171,7 @@ export default function Form() {
                 />
 
                 <InputForm
+                  inputSize="middle"
                   type="text"
                   placeholder="São Paulo"
                   title="Cidade*"
@@ -192,6 +195,7 @@ export default function Form() {
                 </SelectForm>
 
                 <InputForm
+                  inputSize="small"
                   type="number"
                   placeholder="123"
                   title="Número"
@@ -207,6 +211,7 @@ export default function Form() {
             <>
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Escreva qual o seu cargo ou área de interesse"
                   title="Objetivo"
@@ -220,6 +225,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Márcio Calçados"
                   title="Nome da empresa*"
@@ -230,6 +236,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Gerente de Vendas"
                   title="Cargo ou Posição*"
@@ -248,6 +255,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="middle"
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Início*"
@@ -256,6 +264,7 @@ export default function Form() {
                 />
 
                 <InputForm
+                  inputSize="middle"
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Fim"
@@ -266,6 +275,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Descreva as atividades mais importantes que você exerceu"
                   title="Descrição:*"
@@ -299,6 +309,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Instituto Federal do Rio Grande do Norte"
                   title="Nome da Instituição*"
@@ -309,6 +320,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Gerente de Vendas"
                   title="Curso"
@@ -318,7 +330,16 @@ export default function Form() {
               </div>
 
               <div className={styles.inputContainer}>
+                <CheckboxForm
+                  id="namee"
+                >
+                  Experiência em andamento
+                </CheckboxForm>
+              </div>
+
+              <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="middle"
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Início*"
@@ -327,6 +348,7 @@ export default function Form() {
                 />
 
                 <InputForm
+                  inputSize="middle"
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Término*"
@@ -343,6 +365,7 @@ export default function Form() {
               <h3>Curso de aperfeiçoamento</h3>
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Gerente de Vendas"
                   title="Curso de aperfeiçoamento"
@@ -353,6 +376,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Instituto Federal do Rio Grande do Norte"
                   title="Nome da Instituição"
@@ -372,10 +396,9 @@ export default function Form() {
                   <option value="Intermediario">Intermediário</option>
                   <option value="Avançado">Avançado</option>
                 </SelectForm>
-              </div>
 
-              <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="middle"
                   type="text"
                   placeholder="20h"
                   title="Carga horária"
@@ -386,6 +409,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="middle"
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Início*"
@@ -394,6 +418,7 @@ export default function Form() {
                 />
 
                 <InputForm
+                  inputSize="middle"
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Término*"
@@ -405,6 +430,7 @@ export default function Form() {
               <h3>Habilidades</h3>
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Experiência em Photoshop"
                   title="Nome da Habilidade, Tecnologia ou Ferramenta"
@@ -433,16 +459,16 @@ export default function Form() {
               <h3>Informações sobre a deficiência</h3>
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="small"
                   type="text"
                   placeholder="299.3"
                   title="Número do CID:*"
                   id="CID"
                   {...register("CID")}
                 />
-              </div>
 
-              <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Perda auditiva parcial"
                   title="Grau de deficiência:*"
@@ -453,6 +479,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Não preciso de equipamento ou adaptações ou preciso de..."
                   title="Equipamento ou adaptações necessárias* "
@@ -463,6 +490,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Não tenho limitações cotidianas ou tenho limitações com..."
                   title="Limitações cotidianas*"
@@ -473,6 +501,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <InputForm
+                  inputSize="large"
                   type="text"
                   placeholder="Escreva aqui"
                   title="Informações adicionais*"
