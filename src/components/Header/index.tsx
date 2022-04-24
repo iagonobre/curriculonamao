@@ -38,11 +38,12 @@ export function Header() {
             </div>
 
             <div className={styles.line} />
-
-            <button>
-              <FiSettings size={20} />
-              Editar Perfil
-            </button>
+            <Link passHref href="/app/perfil">
+              <button>
+                <FiSettings size={20} />
+                Editar Perfil
+              </button>
+            </Link>
             <button>
               <FiLogOut size={20} color="#E33D3D" />
               Sair

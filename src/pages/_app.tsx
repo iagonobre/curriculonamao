@@ -3,16 +3,15 @@ import { AppProps } from 'next/app';
 import '../../styles/global.scss';
 
 import { FontContextProvider } from '../contexts/FontContext';
-import { AcessibilityArea } from '../components/AccessibilityArea';
+import VLibras from '@djpfs/react-vlibras';
 
 
 function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <FontContextProvider>
-      <AcessibilityArea>
-        <Component {...pageProps} />
-      </AcessibilityArea>
+      <Component {...pageProps} />
+      <VLibras />
     </FontContextProvider>
   )
 }

@@ -13,7 +13,11 @@ export default function Perfil() {
       <div className={styles.container}>
         <div className={styles.boxContent}>
           <div className={styles.profileForm}>
-            <FiArrowLeft size={20} />
+            <Link href="/app">
+              <a>
+                <FiArrowLeft size={20} />
+              </a>
+            </Link>
             <div className={styles.imageContainer}>
               <img src="/assets/profile2.png" alt="" />
               <button>Alterar</button>
