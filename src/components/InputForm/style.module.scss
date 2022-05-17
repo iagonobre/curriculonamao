@@ -101,3 +101,14 @@
     color: var(--shapeDark);
   }
 }
+
+
+.inputError {
+  input {
+    border: 2px solid var(--alert);  
+  }
+
+  input::placeholder {
+    color: var(--alert);
+  }
+}

@@ -27,6 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   width: 54px;
   height: 54px;
@@ -40,6 +41,7 @@
 }
 
 .dropdownContent {
+
   display: flex;
   flex-direction: column;
 

@@ -14,7 +14,7 @@ export default function HomeApp() {
       ) : (
         <div className={styles.nothingContainer}>
           <div>
-            <p>Você ainda o possui <br />um currículo</p>
+            <p>Você ainda não possui <br />um currículo</p>
             <img src="/assets/homeapp.svg" alt="Vizinhança vazia" />
             <Button styleType="outline">CRIAR MEU CURRÍCULO</Button>
           </div>
