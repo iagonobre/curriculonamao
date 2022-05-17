@@ -9,9 +9,13 @@ import { CheckboxForm } from '../../../components/CheckboxForm';
 import { InputForm } from '../../../components/InputForm';
 
 import { useCallback, useEffect, useState } from 'react';
+import Lottie from 'react-lottie';
 
 import axios from 'axios';
+
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import * as animationData from '../../../../public/typing.json'
 
 type State = {
   id: number;
@@ -19,7 +23,7 @@ type State = {
 }
 
 export default function Form() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const [states, setStates] = useState<State[]>();
 
   useEffect(() => {
@@ -33,63 +37,25 @@ export default function Form() {
     getStates();
   }, [])
 
-  const useYupValidationResolver = (validationSchema) => useCallback(async (data) => {
-    try {
-      const values = await validationSchema.validate(data, {
-        abortEarly: false
-      });
-
-      return {
-        values,
-        errors: {}
-      };
-    } catch (errors) {
-      return {
-        values: {},
-        errors: errors.inner.reduce(
-          (allErrors, currentError) => ({
-            ...allErrors,
-            [currentError.path]: {
-              type: currentError.type ?? "validation",
-              message: currentError.message
-            }
-          }),
-          {}
-        )
-      };
-    }
-  },
-    [validationSchema]
-  );
-
-  const validationSchema = yup.object({
-    name: yup.string().required("Esta informação é obrigatória"),
-    date: yup.string().required("Required"),
-    email: yup.string().email().required("Required"),
-    phone: yup.number().required("Required"),
-    maritalstatus: yup.string().required("Required"),
-    linkedin: yup.string().required("Required"),
-    cep: yup.string().required("Required"),
-    street: yup.string().required("Required"),
-    district: yup.string().required("Required"),
-    city: yup.string().required("Required"),
-    state: yup.string().required("Required"),
-    number: yup.number().required("Required"),
+  const schema = yup.object({
+    name: yup.string().required('O nome é obrigatório'),
+    bornDate: yup.date().required('A data é obrigatória')
   });
 
-  const resolver = useYupValidationResolver(validationSchema);
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+    mode: 'onBlur'
+  })
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm({ resolver });
   const onSubmit = (data) => console.log(data);
-
-
 
   return (
     <>
+      {console.log(errors)}
       <Header />
       <div className={styles.stepContainer}>
         <span />
-        <div className={styles.stepBox}>
+        <div className={`${styles.stepBox}`}>
           <button>
             <div>
               <p>1</p>
@@ -100,7 +66,7 @@ export default function Form() {
           </div>
         </div>
 
-        <div className={styles.stepBox}>
+        <div className={`${styles.stepBox} ${step < 1 && styles.stepBoxDisabled}`}>
           <button>
             <div>
               <p>2</p>
@@ -111,7 +77,7 @@ export default function Form() {
           </div>
         </div>
 
-        <div className={styles.stepBox}>
+        <div className={`${styles.stepBox} ${step < 2 && styles.stepBoxDisabled}`}>
           <button>
             <div>
               <p>3</p>
@@ -122,7 +88,7 @@ export default function Form() {
           </div>
         </div>
 
-        <div className={styles.stepBox}>
+        <div className={`${styles.stepBox} ${step < 3 && styles.stepBoxDisabled}`}>
           <button>
             <div>
               <p>4</p>
@@ -133,7 +99,7 @@ export default function Form() {
           </div>
         </div>
 
-        <div className={styles.stepBox}>
+        <div className={`${styles.stepBox} ${step < 4 && styles.stepBoxDisabled}`}>
           <button>
             <div>
               <p>5</p>
@@ -146,8 +112,7 @@ export default function Form() {
       </div>
 
       <div className={styles.container}>
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-
+        <form id="contentform" className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           {step === 0 && (
             <>
               <h3>Informações Básicas</h3>
@@ -159,14 +124,17 @@ export default function Form() {
                   placeholder="Ana Maria da Silva"
                   title="Nome Completo*"
                   id="name"
-                  {...register("name")}
+                  error={errors.name?.message}
+                  register={register("name")}
                 />
+
                 <InputForm
                   inputSize="middle"
                   type="date"
                   title="Data de Nascimento*"
-                  id="date"
-                  {...register("date")}
+                  id="bornDate"
+                  error={errors.bornDate?.message}
+                  register={register("bornDate")}
                 />
               </div>
 
@@ -174,10 +142,9 @@ export default function Form() {
                 <InputForm
                   inputSize="large"
                   type="email"
-                  placeholder="anamariasilva@gmail.com"
-                  title="E-mail*"
+                  title="Email*"
                   id="email"
-                  {...register("email")}
+                  register={register("email")}
                 />
                 <InputForm
                   inputSize="middle"
@@ -185,7 +152,7 @@ export default function Form() {
                   placeholder="(DD) 99999-9999"
                   title="Telefone*"
                   id="phone"
-                  {...register("phone")}
+                  register={register("phone")}
                 />
               </div>
 
@@ -193,7 +160,7 @@ export default function Form() {
                 <SelectForm
                   title="Estado Civil*"
                   id="maritalstatus"
-                  {...register("maritalstatus")}
+                  register={register("maritalstatus")}
                 >
                   <option value="" disabled selected>Selecionar</option>
                   <option value="Solteiro">Solteiro</option>
@@ -209,7 +176,7 @@ export default function Form() {
                   placeholder="https://www.linkedin.com/in/ana"
                   title="LinkedIn"
                   id="linkedin"
-                  {...register("linkedin")}
+                  register={register("linkedin")}
                 />
               </div>
 
@@ -223,7 +190,7 @@ export default function Form() {
                   placeholder="99999-999"
                   title="CEP"
                   id="cep"
-                  {...register("cep")}
+                  register={register("cep")}
                 />
 
                 <InputForm
@@ -232,7 +199,7 @@ export default function Form() {
                   placeholder="Avenida Machado de Assis"
                   title="Rua"
                   id="street"
-                  {...register("street")}
+                  register={register("street")}
                 />
               </div>
 
@@ -243,7 +210,7 @@ export default function Form() {
                   placeholder="Vila Mariana"
                   title="Bairro*"
                   id="district"
-                  {...register("district")}
+                  register={register("district")}
                 />
 
                 <InputForm
@@ -252,7 +219,7 @@ export default function Form() {
                   placeholder="São Paulo"
                   title="Cidade*"
                   id="city"
-                  {...register("city")}
+                  register={register("city")}
                 />
               </div>
 
@@ -260,7 +227,7 @@ export default function Form() {
                 <SelectForm
                   title="Estado*"
                   id="state"
-                  {...register("state")}
+                  register={register("state")}
                 >
                   <option value="" disabled selected>Selecionar</option>
                   {states?.map((state) => (
@@ -274,7 +241,7 @@ export default function Form() {
                   placeholder="123"
                   title="Número"
                   id="number"
-                  {...register("number")}
+                  register={register("number")}
                 />
               </div>
             </>
@@ -290,7 +257,7 @@ export default function Form() {
                   placeholder="Escreva qual o seu cargo ou área de interesse"
                   title="Objetivo"
                   id="objetivo"
-                  {...register("objetivo")}
+                  register={register("objetivo")}
                 />
               </div>
 
@@ -304,7 +271,7 @@ export default function Form() {
                   placeholder="Márcio Calçados"
                   title="Nome da empresa*"
                   id="nomeempresa"
-                  {...register("nomeempresa")}
+                  register={register("nomeempresa")}
                 />
               </div>
 
@@ -315,7 +282,7 @@ export default function Form() {
                   placeholder="Gerente de Vendas"
                   title="Cargo ou Posição*"
                   id="cargo"
-                  {...register("cargo")}
+                  register={register("cargo")}
                 />
               </div>
 
@@ -334,7 +301,7 @@ export default function Form() {
                   placeholder="DD/MM/AAAA"
                   title="Início*"
                   id="inicio"
-                  {...register("inicio")}
+                  register={register("inicio")}
                 />
 
                 <InputForm
@@ -343,7 +310,7 @@ export default function Form() {
                   placeholder="DD/MM/AAAA"
                   title="Fim"
                   id="fim"
-                  {...register("fim")}
+                  register={register("fim")}
                 />
               </div>
 
@@ -354,7 +321,7 @@ export default function Form() {
                   placeholder="Descreva as atividades mais importantes que você exerceu"
                   title="Descrição:*"
                   id="descricao"
-                  {...register("descricao")}
+                  register={register("descricao")}
                 />
               </div>
             </>
@@ -367,7 +334,7 @@ export default function Form() {
                 <SelectForm
                   title="Tipo ou nível acadêmico*"
                   id="nivelacademico"
-                  {...register("nivelacademico")}
+                  register={register("nivelacademico")}
                 >
                   <option value="" disabled selected>Selecionar</option>
                   <option value="Ensino Fundamental I">Ensino Fundamental I</option>
@@ -388,7 +355,7 @@ export default function Form() {
                   placeholder="Instituto Federal do Rio Grande do Norte"
                   title="Nome da Instituição*"
                   id="nomeinstituicao"
-                  {...register("nomeinstituicao")}
+                  register={register("nomeinstituicao")}
                 />
               </div>
 
@@ -399,7 +366,7 @@ export default function Form() {
                   placeholder="Gerente de Vendas"
                   title="Curso"
                   id="curso"
-                  {...register("curso")}
+                  register={register("curso")}
                 />
               </div>
 
@@ -418,7 +385,7 @@ export default function Form() {
                   placeholder="DD/MM/AAAA"
                   title="Início*"
                   id="inicio"
-                  {...register("inicio")}
+                  register={register("inicio")}
                 />
 
                 <InputForm
@@ -427,7 +394,7 @@ export default function Form() {
                   placeholder="DD/MM/AAAA"
                   title="Término*"
                   id="fim"
-                  {...register("fim")}
+                  register={register("fim")}
                 />
               </div>
 
@@ -444,7 +411,7 @@ export default function Form() {
                   placeholder="Gerente de Vendas"
                   title="Curso de aperfeiçoamento"
                   id="cursodeaperfeicoamento"
-                  {...register("cursodeaperfeicoamento")}
+                  register={register("cursodeaperfeicoamento")}
                 />
               </div>
 
@@ -455,7 +422,7 @@ export default function Form() {
                   placeholder="Instituto Federal do Rio Grande do Norte"
                   title="Nome da Instituição"
                   id="nomeinstituicao"
-                  {...register("nomeinstituicao")}
+                  register={register("nomeinstituicao")}
                 />
               </div>
 
@@ -463,7 +430,7 @@ export default function Form() {
                 <SelectForm
                   title="Nível de Conhecimento"
                   id="nivelconhecimento"
-                  {...register("nivelconhecimento")}
+                  register={register("nivelconhecimento")}
                 >
                   <option value="" disabled selected>Selecionar</option>
                   <option value="Iniciante">Iniciante</option>
@@ -477,7 +444,7 @@ export default function Form() {
                   placeholder="20h"
                   title="Carga horária"
                   id="cargahoraria"
-                  {...register("cargahoraria")}
+                  register={register("cargahoraria")}
                 />
               </div>
 
@@ -488,7 +455,7 @@ export default function Form() {
                   placeholder="DD/MM/AAAA"
                   title="Início*"
                   id="inicio"
-                  {...register("inicio")}
+                  register={register("inicio")}
                 />
 
                 <InputForm
@@ -497,7 +464,7 @@ export default function Form() {
                   placeholder="DD/MM/AAAA"
                   title="Término*"
                   id="fim"
-                  {...register("fim")}
+                  register={register("fim")}
                 />
               </div>
 
@@ -509,7 +476,7 @@ export default function Form() {
                   placeholder="Experiência em Photoshop"
                   title="Nome da Habilidade, Tecnologia ou Ferramenta"
                   id="nomehabilidade"
-                  {...register("nomehabilidade")}
+                  register={register("nomehabilidade")}
                 />
               </div>
 
@@ -517,7 +484,7 @@ export default function Form() {
                 <SelectForm
                   title="Nível de Conhecimento"
                   id="nivelconhecimento"
-                  {...register("nivelconhecimento")}
+                  register={register("nivelconhecimento")}
                 >
                   <option value="" disabled selected>Selecionar</option>
                   <option value="Iniciante">Iniciante</option>
@@ -538,7 +505,7 @@ export default function Form() {
                   placeholder="299.3"
                   title="Número do CID:*"
                   id="CID"
-                  {...register("CID")}
+                  register={register("CID")}
                 />
 
                 <InputForm
@@ -547,7 +514,7 @@ export default function Form() {
                   placeholder="Perda auditiva parcial"
                   title="Grau de deficiência:*"
                   id="graudedeficiencia"
-                  {...register("graudedeficiencia")}
+                  register={register("graudedeficiencia")}
                 />
               </div>
 
@@ -558,7 +525,7 @@ export default function Form() {
                   placeholder="Não preciso de equipamento ou adaptações ou preciso de..."
                   title="Equipamento ou adaptações necessárias* "
                   id="equipamento"
-                  {...register("equipamento")}
+                  register={register("equipamento")}
                 />
               </div>
 
@@ -569,7 +536,7 @@ export default function Form() {
                   placeholder="Não tenho limitações cotidianas ou tenho limitações com..."
                   title="Limitações cotidianas*"
                   id="limitacoes"
-                  {...register("limitacoes")}
+                  register={register("limitacoes")}
                 />
               </div>
 
@@ -580,7 +547,7 @@ export default function Form() {
                   placeholder="Escreva aqui"
                   title="Informações adicionais*"
                   id="infoadicionais"
-                  {...register("infoadicionais")}
+                  register={register("infoadicionais")}
                 />
               </div>
             </>
@@ -588,10 +555,21 @@ export default function Form() {
 
         </form>
         <div className={styles.next}>
-          <h1>Aqui vai ficar a imagem</h1>
+          <div>
+            <Lottie
+              options={{
+                animationData,
+              }}
+            />
+            <div>
+              {step > 0 && (
+                <button>VOLTAR</button>
+              )}
+              <button type="submit" form="contentform">CONTINUAR</button>
+            </div>
+          </div>
         </div>
       </div >
-
     </>
   )
 }

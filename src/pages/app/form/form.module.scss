@@ -1,15 +1,19 @@
 .container {
   padding: 0rem 15% 0rem 15%;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  grid-gap: 4rem;
 }
 
 .form {
-  width: 70%;
+  width: 100%;
   padding-bottom: 4rem;
 
   h3 {
     margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: bold;
   }
 
   p {
@@ -23,8 +27,53 @@
 }
 
 .next {
-  margin-left: 10rem;
-  background: blue;
+  position: sticky;
+  top: 0;
+  
+  height: 10rem;
+
+  div:first-child {
+    margin-top: 8rem;
+    height: 20rem;
+    width: 100%;
+
+    div {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      button {
+        background: none;
+        border: none;
+      }
+
+      button:first-child {
+        margin-right: 2rem;
+        border: 2px solid var(--alert);
+        width: 8rem;
+        padding: 0.4rem 0rem;
+        border-radius: 8px;
+        color: var(--alert);
+        font-weight: bold;
+      }
+
+      button:last-child {
+        background: var(--primary);
+        border: 2px solid var(--primary);
+        width: 50%;
+        padding: 0.4rem 0rem;
+        border-radius: 8px;
+        color: var(--background);
+        font-weight: bold;
+      }
+
+      button:hover {
+        opacity: 0.6;
+      }
+    }
+  }
 }
 
 .inputContainer {
@@ -53,7 +102,7 @@
     z-index: -1;
   }
 }
-  
+
 
 .stepText {
   display: flex;
@@ -98,3 +147,18 @@
   }
 }
 
+.stepBoxDisabled {
+  button {
+    background: var(--shapeLight);
+    
+    div {
+      background-color: var(--shape);
+    }
+  }
+
+  div {
+    p {
+      color: var(--shapeLight);
+    }
+  }
+}
