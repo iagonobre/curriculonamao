@@ -39,7 +39,9 @@ export default function Form() {
 
   const schema = yup.object({
     name: yup.string().required('O nome é obrigatório'),
-    bornDate: yup.date().required('A data é obrigatória')
+    bornDate: yup.date().required('A data é obrigatória'),
+    email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatória'),
+    phone: yup.string().required()
   });
 
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -144,6 +146,7 @@ export default function Form() {
                   type="email"
                   title="Email*"
                   id="email"
+                  error={errors.email?.message}
                   register={register("email")}
                 />
                 <InputForm
@@ -152,6 +155,7 @@ export default function Form() {
                   placeholder="(DD) 99999-9999"
                   title="Telefone*"
                   id="phone"
+                  error={errors.phone?.message}
                   register={register("phone")}
                 />
               </div>
@@ -176,6 +180,7 @@ export default function Form() {
                   placeholder="https://www.linkedin.com/in/ana"
                   title="LinkedIn"
                   id="linkedin"
+                  error={errors.linkedin?.message}
                   register={register("linkedin")}
                 />
               </div>
@@ -190,6 +195,7 @@ export default function Form() {
                   placeholder="99999-999"
                   title="CEP"
                   id="cep"
+                  error={errors.cep?.message}
                   register={register("cep")}
                 />
 
@@ -199,6 +205,7 @@ export default function Form() {
                   placeholder="Avenida Machado de Assis"
                   title="Rua"
                   id="street"
+                  error={errors.street?.message}
                   register={register("street")}
                 />
               </div>
@@ -210,6 +217,7 @@ export default function Form() {
                   placeholder="Vila Mariana"
                   title="Bairro*"
                   id="district"
+                  error={errors.district?.message}
                   register={register("district")}
                 />
 
@@ -219,6 +227,7 @@ export default function Form() {
                   placeholder="São Paulo"
                   title="Cidade*"
                   id="city"
+                  error={errors.city?.message}
                   register={register("city")}
                 />
               </div>
@@ -241,6 +250,7 @@ export default function Form() {
                   placeholder="123"
                   title="Número"
                   id="number"
+                  error={errors.number?.message}
                   register={register("number")}
                 />
               </div>
@@ -271,6 +281,7 @@ export default function Form() {
                   placeholder="Márcio Calçados"
                   title="Nome da empresa*"
                   id="nomeempresa"
+                  error={errors.nomeempresa?.message}
                   register={register("nomeempresa")}
                 />
               </div>
@@ -282,6 +293,7 @@ export default function Form() {
                   placeholder="Gerente de Vendas"
                   title="Cargo ou Posição*"
                   id="cargo"
+                  error={errors.cargo?.message}
                   register={register("cargo")}
                 />
               </div>
@@ -297,19 +309,21 @@ export default function Form() {
               <div className={styles.inputContainer}>
                 <InputForm
                   inputSize="middle"
-                  type="text"
+                  type="date"
                   placeholder="DD/MM/AAAA"
                   title="Início*"
                   id="inicio"
+                  error={errors.inicio?.message}
                   register={register("inicio")}
                 />
 
                 <InputForm
                   inputSize="middle"
-                  type="text"
+                  type="date"
                   placeholder="DD/MM/AAAA"
                   title="Fim"
                   id="fim"
+                  error={errors.fim?.message}
                   register={register("fim")}
                 />
               </div>
@@ -321,6 +335,7 @@ export default function Form() {
                   placeholder="Descreva as atividades mais importantes que você exerceu"
                   title="Descrição:*"
                   id="descricao"
+                  error={errors.descricao?.message}
                   register={register("descricao")}
                 />
               </div>
@@ -355,6 +370,7 @@ export default function Form() {
                   placeholder="Instituto Federal do Rio Grande do Norte"
                   title="Nome da Instituição*"
                   id="nomeinstituicao"
+                  error={errors.nomeinstituicao?.message}
                   register={register("nomeinstituicao")}
                 />
               </div>
@@ -366,6 +382,7 @@ export default function Form() {
                   placeholder="Gerente de Vendas"
                   title="Curso"
                   id="curso"
+                  error={errors.curso?.message}
                   register={register("curso")}
                 />
               </div>
@@ -381,11 +398,12 @@ export default function Form() {
               <div className={styles.inputContainer}>
                 <InputForm
                   inputSize="middle"
-                  type="text"
+                  type="date"
                   placeholder="DD/MM/AAAA"
                   title="Início*"
-                  id="inicio"
-                  register={register("inicio")}
+                  id="beginExperience"
+                  error={errors.beginExperience?.message}
+                  register={register("beginExperience")}
                 />
 
                 <InputForm
@@ -393,8 +411,9 @@ export default function Form() {
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Término*"
-                  id="fim"
-                  register={register("fim")}
+                  id="endExperience"
+                  error={errors.endExperience?.message}
+                  register={register("endExperience")}
                 />
               </div>
 
@@ -411,6 +430,7 @@ export default function Form() {
                   placeholder="Gerente de Vendas"
                   title="Curso de aperfeiçoamento"
                   id="cursodeaperfeicoamento"
+                  error={errors.cursodeaperfeicoamento?.message}
                   register={register("cursodeaperfeicoamento")}
                 />
               </div>
@@ -422,6 +442,7 @@ export default function Form() {
                   placeholder="Instituto Federal do Rio Grande do Norte"
                   title="Nome da Instituição"
                   id="nomeinstituicao"
+                  error={errors.nomeinstituicao?.message}
                   register={register("nomeinstituicao")}
                 />
               </div>
@@ -444,6 +465,7 @@ export default function Form() {
                   placeholder="20h"
                   title="Carga horária"
                   id="cargahoraria"
+                  error={errors.cargahoraria?.message}
                   register={register("cargahoraria")}
                 />
               </div>
@@ -454,8 +476,9 @@ export default function Form() {
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Início*"
-                  id="inicio"
-                  register={register("inicio")}
+                  id="beginCourse"
+                  error={errors.beginExperience?.message}
+                  register={register("beginCourse")}
                 />
 
                 <InputForm
@@ -463,8 +486,9 @@ export default function Form() {
                   type="text"
                   placeholder="DD/MM/AAAA"
                   title="Término*"
-                  id="fim"
-                  register={register("fim")}
+                  id="endCourse"
+                  error={errors.endExperience?.message}
+                  register={register("endCourse")}
                 />
               </div>
 
@@ -476,6 +500,7 @@ export default function Form() {
                   placeholder="Experiência em Photoshop"
                   title="Nome da Habilidade, Tecnologia ou Ferramenta"
                   id="nomehabilidade"
+                  error={errors.nomehabilidade?.message}
                   register={register("nomehabilidade")}
                 />
               </div>
@@ -505,6 +530,7 @@ export default function Form() {
                   placeholder="299.3"
                   title="Número do CID:*"
                   id="CID"
+                  error={errors.CID?.message}
                   register={register("CID")}
                 />
 
@@ -514,6 +540,7 @@ export default function Form() {
                   placeholder="Perda auditiva parcial"
                   title="Grau de deficiência:*"
                   id="graudedeficiencia"
+                  error={errors.graudedeficiencia?.message}
                   register={register("graudedeficiencia")}
                 />
               </div>
@@ -525,6 +552,7 @@ export default function Form() {
                   placeholder="Não preciso de equipamento ou adaptações ou preciso de..."
                   title="Equipamento ou adaptações necessárias* "
                   id="equipamento"
+                  error={errors.equipamento?.message}
                   register={register("equipamento")}
                 />
               </div>
@@ -536,6 +564,7 @@ export default function Form() {
                   placeholder="Não tenho limitações cotidianas ou tenho limitações com..."
                   title="Limitações cotidianas*"
                   id="limitacoes"
+                  error={errors.limitacoes?.message}
                   register={register("limitacoes")}
                 />
               </div>
@@ -547,6 +576,7 @@ export default function Form() {
                   placeholder="Escreva aqui"
                   title="Informações adicionais*"
                   id="infoadicionais"
+                  error={errors.infoadicionais?.message}
                   register={register("infoadicionais")}
                 />
               </div>
