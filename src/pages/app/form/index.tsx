@@ -23,7 +23,7 @@ type State = {
 }
 
 export default function Form() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(2);
   const [states, setStates] = useState<State[]>();
 
   useEffect(() => {
@@ -437,7 +437,7 @@ export default function Form() {
 
                 <InputForm
                   inputSize="middle"
-                  type="text"
+                  type="date"
                   placeholder="DD/MM/AAAA"
                   title="Término*"
                   id="endExperience"
@@ -502,7 +502,7 @@ export default function Form() {
               <div className={styles.inputContainer}>
                 <InputForm
                   inputSize="middle"
-                  type="text"
+                  type="date"
                   placeholder="DD/MM/AAAA"
                   title="Início*"
                   id="beginCourse"
@@ -512,7 +512,7 @@ export default function Form() {
 
                 <InputForm
                   inputSize="middle"
-                  type="text"
+                  type="date"
                   placeholder="DD/MM/AAAA"
                   title="Término*"
                   id="endCourse"
