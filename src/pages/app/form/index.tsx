@@ -23,7 +23,7 @@ type State = {
 }
 
 export default function Form() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const [states, setStates] = useState<State[]>();
 
   useEffect(() => {
@@ -41,8 +41,36 @@ export default function Form() {
     name: yup.string().required('O nome é obrigatório'),
     bornDate: yup.date().required('A data é obrigatória'),
     email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatória'),
-    phone: yup.string().required()
-  });
+    phone: yup.string().required(),
+    linkedin: yup.string().url(),
+    street: yup.string(),
+    district: yup.string().required('O bairro é obrigatório'),
+    city: yup.string().required('A cidade é obrigatório'),
+    state: yup.string().required('O estado é obrigatório'),
+    number: yup.string(),
+    objetivo: yup.string(),
+    nomeempresa: yup.string().required('O nome da empresa é obrigatório'),
+    cargo: yup.string().required('Informar o cargo é obrigatório'),
+    inicio: yup.date().required('A data é obrigatória'),
+    fim: yup.date().required('A data é obrigatória'),
+    descricao: yup.string().required('A descrição é obrigatória'),
+    nomeinstituicao: yup.string().required('O nome da instituição é obrigatório'),
+    curso: yup.string().required('O nome do curso é obrigatório'),
+    beginExperience: yup.date().required('A data é obrigatória'),
+    endExperience: yup.date().required('A data é obrigatória'),
+    cursodeaperfeicoamento: yup.string(),
+    nomedainstituicao: yup.string(),
+    nivelaperfeicoamento: yup.string(),
+    cargahoraria: yup.string(),
+    beginCourse: yup.date(),
+    endCourse: yup.date(),
+    nomehabilidade: yup.string(),
+    CID: yup.string().required('O CID é obrigatória'),
+    graudedeficiencia: yup.string().required('O grau de deficiência é obrigatória'),
+    equipamento: yup.string().required('Informar se precisa ou não de equipamentos é obrigatório'),
+    limitacoes: yup.string().required('Informar se tem ou não limitações é obrigatório'),
+    infoadicionais: yup.string(),
+  })
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -354,6 +382,7 @@ export default function Form() {
                   <option value="" disabled selected>Selecionar</option>
                   <option value="Ensino Fundamental I">Ensino Fundamental I</option>
                   <option value="Ensino Fundamental II">Ensino Fundamental II</option>
+                  <option value="Ensino Médio">Ensino Médio</option>
                   <option value="Licenciatura">Licenciatura</option>
                   <option value="Graduação">Graduação</option>
                   <option value="Pós-graduação">Pós-graduação</option>
@@ -441,9 +470,9 @@ export default function Form() {
                   type="text"
                   placeholder="Instituto Federal do Rio Grande do Norte"
                   title="Nome da Instituição"
-                  id="nomeinstituicao"
+                  id="nomedainstituicao"
                   error={errors.nomeinstituicao?.message}
-                  register={register("nomeinstituicao")}
+                  register={register("nomedainstituicao")}
                 />
               </div>
 
