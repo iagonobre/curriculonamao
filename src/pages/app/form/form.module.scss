@@ -4,6 +4,11 @@
   display: grid;
   grid-template-columns: 2fr 1.2fr;
   grid-gap: 4rem;
+
+  @media only screen and (max-device-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.1fr 0.1fr;
+  }
 }
 
 .form {
@@ -29,7 +34,7 @@
 .next {
   position: sticky;
   top: 0;
-  
+
   height: 10rem;
 
   div:first-child {
@@ -150,7 +155,7 @@
 .stepBoxDisabled {
   button {
     background: var(--shapeLight);
-    
+
     div {
       background-color: var(--shape);
     }
@@ -159,6 +164,20 @@
   div {
     p {
       color: var(--shapeLight);
+    }
+  }
+}
+
+@media only screen and (max-device-width: 900px) {
+  .next {
+    svg {
+      display: none;
+    }
+
+    div {
+      margin: 0;
+      padding: 0;
+      height: 0;
     }
   }
 }
