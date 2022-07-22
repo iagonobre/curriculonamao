@@ -5,7 +5,6 @@ import '../../styles/global.scss';
 import { FontContextProvider } from '../contexts/FontContext';
 import VLibras from '@djpfs/react-vlibras';
 
-
 function MyApp({ Component, pageProps }: AppProps) {
 
   return (

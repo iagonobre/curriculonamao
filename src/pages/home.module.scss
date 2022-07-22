@@ -1,6 +1,7 @@
 .mainBackground {
   width: 100%;
-  background: linear-gradient(257.2deg, #9482fe 0%, #3988f6 101.58%);
+  background: linear-gradient(257.2deg, var(--gradient1) 0%, var(--gradient2) 101.58%);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,12 +35,12 @@
 
       a:first-child {
         padding: 1rem;
-        color: var(--background);
+        color: var(--font2);
         background: none;
 
         font-family: "Chivo";
         font-size: 0.75rem;
-        border: 2px solid var(--background) !important;
+        border: 2px solid var(--font2) !important;
         border-radius: 8px;
 
         transition: 0.6s;
@@ -52,7 +53,7 @@
       a:last-child {
         padding: 1rem;
         color: var(--primary);
-        background: var(--background);
+        background: var(--font2);
 
         font-family: "Chivo";
         font-size: 0.75rem;
@@ -108,11 +109,11 @@
     padding: 1.2rem;
     border-radius: 8px;
     background: none;
-    color: var(--background);
+    color: var(--font2);
     font-family: "Chivo";
     font-weight: bold;
     font-size: 1rem;
-    border: 2px solid var(--background);
+    border: 2px solid var(--font2);
 
     transition: 0.6s;
   }
@@ -123,7 +124,7 @@
 
   h1 {
     max-width: 50%;
-    color: var(--background);
+    color: var(--font2);
     font-size: 2rem;
     font-weight: 500;
   }
@@ -131,7 +132,7 @@
   p {
     margin-top: 1rem;
     max-width: 50%;
-    color: var(--shapeLight);
+    color: var(--font2);
     font-size: 1rem;
     line-height: 1.5rem;
     font-family: "Chivo";
@@ -178,10 +179,12 @@
 
     h1 {
       max-width: 100%;
+      color: var(--font);
     }
 
     p {
       max-width: 100%;
+      color: var(--font);
     }
   }
 }
@@ -228,10 +231,15 @@
     }
   }
 
+  h3 {
+    color: var(--font);
+  }
+
   p {
     margin-top: 0.5rem;
     font-family: "Chivo";
     font-size: 1rem;
+    color: var(--font);
   }
 
   @media (max-width: 720px) {
@@ -281,6 +289,11 @@
   h4 {
     margin-top: 1.25rem;
     font-size: 2.1rem;
+    color: var(--font);
+  }
+
+  p {
+    color: var(--font);
   }
 
   @media (max-width: 1080px) {
@@ -313,6 +326,7 @@
 
     h3 {
       text-align: right;
+      color: var(--font);
     }
 
     div:last-child {
@@ -347,6 +361,7 @@
     text-align: justify;
     font-family: "Chivo";
     font-size: 0.98rem;
+    color: var(--font);
   }
 }
 
@@ -365,7 +380,7 @@
     background: var(--primary);
     padding: 1rem;
     border-radius: 8px;
-    border: 1px solid var(--primary);
+    border: 1px solid var(--primary2);
     color: var(--background);
 
     transition: 0.6s;
@@ -388,6 +403,11 @@
 
       button {
         margin-top: 3rem;
+        color: var(--font2);
+      }
+
+      h3 {
+        color: var(--font);
       }
     }
 
@@ -425,7 +445,7 @@
     justify-content: space-between;
     align-items: center;
 
-    color: var(--background);
+    color: var(--font2);
     font-family: "Chivo";
     font-weight: 300;
   }
@@ -446,11 +466,12 @@
   flex-direction: row;
   justify-content: space-between;
 
+
   nav a {
     margin: 0rem 1rem 0rem 1rem;
     font-size: 1rem;
     font-family: "Chivo";
-    color: var(--background);
+    color: var(--font2);
   }
 
   @media (max-width: 1080px) {
@@ -462,7 +483,7 @@
 .buttonUp {
   width: 2.5rem;
   height: 2.5rem;
-  background: var(--shape);
+  background: var(--font2);
   border-radius: 4px;
 
   display: flex;

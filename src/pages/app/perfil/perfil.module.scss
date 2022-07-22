@@ -6,7 +6,11 @@
   justify-content: center;
   align-items: center;
 
-  background: linear-gradient(257.2deg, #9482fe 0%, #3988f6 101.58%);
+  background: linear-gradient(257.2deg, var(--gradient1) 0%, var(--gradient2) 101.58%);
+
+  @media (max-width: 650px) {
+    height: 130vh;
+  }
 }
 
 .boxContent {
@@ -24,6 +28,7 @@
   @media (max-width: 650px) {
     grid-template-columns: 1fr;
     grid-template-rows: 0.1fr 0.1fr;
+    margin: 1rem;
   }
 }
 

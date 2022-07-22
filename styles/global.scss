@@ -28,6 +28,29 @@ body::-webkit-scrollbar-thumb {
   --shapeDark: #c4c4c4;
   --alert: #e33d3d;
   --dark: #f0f0fc;
+  --font: #060606;
+  --font2: #ffffff;
+  --gradient1: #9482fe;
+  --gradient2: #3988f6;
+}
+
+[data-theme='dark'] {
+  --background: #060606;
+  --primary: #060606;
+  --primary2: #f0f0f0;
+  --primaryDark: #212121;
+  --lightPrimary: #f0f0f0;
+  --secondary: #fff;
+  --tertiary: #9482fe;
+  --shapeLight: #fff;
+  --shape: #060606;
+  --shapeDark: #fff;
+  --alert: #e33d3d;
+  --dark: #fff;
+  --font: #f0f0fc;
+  --font2: #fff;
+  --gradient1: #060606;
+  --gradient2: #060606;
 }
 
 body {
