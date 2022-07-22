@@ -9,7 +9,9 @@
   background: linear-gradient(257.2deg, var(--gradient1) 0%, var(--gradient2) 101.58%);
 
   @media (max-width: 650px) {
-    height: 130vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.1fr 0.1fr;
+    margin: 1rem;
   }
 }
 

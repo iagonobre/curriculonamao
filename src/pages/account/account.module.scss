@@ -1,4 +1,4 @@
-@media only screen and (max-device-width: 900px) {}
+@media (max-device-width: 900px) {}
 
 .accountContainer {
   width: 100%;
@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
 
-  background: linear-gradient(257.2deg, #9482fe 0%, #3988f6 101.58%);
+  background: linear-gradient(257.2deg, var(--gradient1) 0%, var(--gradient2) 101.58%);
 
   svg {
     color: var(--primary);
