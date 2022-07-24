@@ -2,8 +2,11 @@ import Link from "next/link";
 import styles from './style.module.scss';
 
 import { FiSettings, FiLogOut } from 'react-icons/fi';
+import { useTheme } from "../../hooks/theme";
 
 export function Header() {
+  const { changeTheme } = useTheme();
+
   return (
     <header className={styles.headerStyle}>
       <div>
@@ -23,7 +26,7 @@ export function Header() {
         <button>
           <img src="/assets/text-icon-less.svg" alt="Diminuir Textos" />
         </button>
-        <button>
+        <button onClick={() => changeTheme()}>
           <img src="/assets/contrast.svg" alt="Contraste" />
         </button>
         <details>

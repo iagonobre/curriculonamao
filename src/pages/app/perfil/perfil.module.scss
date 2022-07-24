@@ -23,7 +23,7 @@
   padding: 1.5rem;
   background: var(--background);
 
-  border: 2px solid var(--shapeDark);
+  border: 2px solid var(--shape);
   border-radius: 8px;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.25);
 
@@ -91,6 +91,7 @@
 .profileContent {
   display: flex;
   flex-direction: column;
+  color: var(--text);
 
   h3 {
     font-weight: bold;
@@ -102,7 +103,7 @@
     height: 2px;
 
     margin-top: 0.5rem;
-    background: var(--secondary);
+    background: var(--shape2);
   }
 
   a {
@@ -119,5 +120,5 @@
   height: 100%;
   width: 2px;
 
-  background: var(--shapeDark);
+  background: var(--shape2);
 }

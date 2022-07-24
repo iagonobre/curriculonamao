@@ -4,9 +4,9 @@
 
   label {
     font-family: "Chivo";
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1rem;
-    color: var(--secondary);
+    color: var(--text);
     margin-bottom: 0.5rem;
   }
 
@@ -14,11 +14,12 @@
     padding: 0.75rem;
     background: var(--shape);
     border-radius: 8px;
+    color: var(--shape2);
 
     border: none;
   }
 
   select:disabled {
-    color: var(--shapeDark);
+    color: var(--shape2);
   }
 }

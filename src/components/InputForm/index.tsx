@@ -6,7 +6,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string,
   inputSize: "small" | "middle" | "medium" | "large",
   register: any;
-  error?: string;
+  error?: any;
 }
 
 export function InputForm({ title, id, register, inputSize, error, ...rest }: InputProps) {

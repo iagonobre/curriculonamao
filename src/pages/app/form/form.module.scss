@@ -1,5 +1,6 @@
 .container {
   padding: 0rem 15% 0rem 15%;
+  background-color: var(--background);
 
   display: grid;
   grid-template-columns: 2fr 1.2fr;
@@ -92,6 +93,7 @@
 }
 
 .stepContainer {
+  background-color: var(--background);
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -104,7 +106,7 @@
     margin-top: 3.5rem;
     height: 0.5rem;
     background-color: var(--shape);
-    z-index: -1;
+    z-index: 1;
   }
 }
 
@@ -114,6 +116,7 @@
   font-size: 0.9rem;
   margin-top: 0.5rem;
   text-align: center;
+  color: var(--text);
 }
 
 .stepBox {
@@ -124,12 +127,14 @@
   flex-direction: column;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  z-index: 2;
 
   button {
+    z-index: 2;
     width: 3.6rem;
     height: 3.6rem;
     border-radius: 1.8rem;
-    background: var(--lightPrimary);
+    background: var(--light);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -154,16 +159,20 @@
 
 .stepBoxDisabled {
   button {
-    background: var(--shapeLight);
+    background: var(--light);
 
     div {
-      background-color: var(--shape);
+      background-color:var(--shape);
+
+      p {
+        color: var(--shape3);
+      }
     }
   }
 
   div {
     p {
-      color: var(--shapeLight);
+      color: var(--light);
     }
   }
 }

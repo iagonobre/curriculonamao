@@ -9,33 +9,38 @@
   border: 2px solid var(--primary);
   background: var(--background);
   border-radius: 8px;
+  
 
   input {
     width: 100%;
     border: none;
     outline: none;
     background: var(--background);
+    
+    font-family: "Chivo";
+    font-size: 1rem;
+    color: var(--primary);
   }
 
   svg {
-    color: var(--primary2);
+    color: var(--primary);
   }
 
   input::placeholder {
     font-family: "Chivo";
     font-size: 1rem;
-    color: var(--primary2);
+    color: var(--shape2);
   }
 }
 
 .focused {
-  border: 2px solid var(--shapeDark);
+  border: 2px solid var(--shape2);
 
   input::placeholder {
-    color: var(--shapeDark);
+    color: var(--shape2);
   }
 
   svg {
-    color: var(--shapeDark);
+    color: var(--shape2);
   }
 }

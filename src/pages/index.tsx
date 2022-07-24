@@ -2,10 +2,12 @@ import Link from 'next/link';
 import { AcessibilityScroll } from '../components/AccessibilityScroll';
 import { Button } from '../components/Button';
 import { useFont } from '../hooks/font';
+import { useTheme } from '../hooks/theme';
 import styles from './home.module.scss';
 
 export default function Home() {
   const { decreaseFont, increaseFont, turnNormalFont } = useFont();
+  const { changeTheme } = useTheme();
 
   return (
     <>
@@ -32,7 +34,7 @@ export default function Home() {
                   <button onClick={() => decreaseFont()} className={styles.iconButton}>
                     <img src="/assets/text-icon-less.svg" alt="Diminuir Textos" />
                   </button>
-                  <button className={styles.iconButton}>
+                  <button onClick={() => changeTheme()} className={styles.iconButton}>
                     <img src="/assets/contrast.svg" alt="Contraste" />
                   </button>
                 </div>
@@ -70,7 +72,7 @@ export default function Home() {
             <div className={styles.cardContainer}>
               <div className={styles.card}>
                 <div>
-                  <img src="/assets/smile.svg" alt="Ícone de sorriso" />
+                  <img id="invert" src="/assets/smile.svg" alt="Ícone de sorriso" />
                   <h4>Acessível</h4>
                 </div>
                 <p>
@@ -79,7 +81,7 @@ export default function Home() {
               </div>
               <div className={styles.card}>
                 <div>
-                  <img src="/assets/protect.svg" alt="Ícone de aprovado" />
+                  <img id="invert" src="/assets/protect.svg" alt="Ícone de aprovado" />
                   <h4>Rápido</h4>
                 </div>
                 <p>
@@ -88,7 +90,7 @@ export default function Home() {
               </div>
               <div className={styles.card}>
                 <div>
-                  <img src="/assets/pizza.svg" alt="Ícone de gráfico" />
+                  <img id="invert" src="/assets/pizza.svg" alt="Ícone de gráfico" />
                   <h4>Inovador</h4>
                 </div>
                 <p>
@@ -117,7 +119,7 @@ export default function Home() {
           </div>
           <div className={styles.line} />
         </section>
-        <section className={styles.recapContainer}>
+        <section id="recap" className={styles.recapContainer}>
           <div>
             <img src="/assets/curriculos.png" alt="" />
             <div>
