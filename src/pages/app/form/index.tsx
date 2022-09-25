@@ -16,6 +16,7 @@ import axios from 'axios';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import * as animationData from '../../../../public/typing.json'
+import { withSSRAuth } from '../../../utils/withSSRAuth';
 
 type State = {
   id: number;
@@ -40,7 +41,7 @@ export default function Form() {
   const schema = yup.object({
     name: yup.string().required('O nome é obrigatório'),
     bornDate: yup.date().required('A data é obrigatória'),
-    email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatória'),
+    email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatório'),
     phone: yup.string().required(),
     linkedin: yup.string().url(),
     street: yup.string(),
@@ -632,3 +633,9 @@ export default function Form() {
     </>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async () => {
+  return {
+    props: {}
+  }
+});

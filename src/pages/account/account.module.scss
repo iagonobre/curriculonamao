@@ -48,3 +48,18 @@
   }
 
 }
+
+.error {
+  width: 100%;
+  background-color: var(--alert);
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin-top: 1rem;
+
+  p {
+    text-align: center;
+    font-family: "Chivo";
+    font-size: 1rem;
+    color: var(--light);
+  }
+}

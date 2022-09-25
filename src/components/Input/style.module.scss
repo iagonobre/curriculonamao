@@ -44,3 +44,11 @@
     color: var(--shape2);
   }
 }
+
+.inputError {
+  input::placeholder {
+    font-family: "Chivo";
+    font-size: 1rem;
+    color: var(--alert);
+  }
+}

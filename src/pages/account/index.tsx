@@ -1,7 +1,6 @@
-import { route } from 'next/dist/server/router';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi'
 
 import { AcessibilityScroll } from "../../components/AccessibilityScroll";
@@ -9,15 +8,24 @@ import { AccountBox } from "../../components/AccountBox";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { useAuth } from '../../hooks/auth';
+import { withSSRGuest } from '../../utils/withSSRGuest';
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 
 import styles from './account.module.scss';
+
+type LoginProps = {
+  email: string;
+  password: string;
+}
 
 export default function Account() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const { login } = useAuth();
-
-  const [email, setEmail] = useState('')
 
   function handleGoBack() {
     router.back();
@@ -27,20 +35,35 @@ export default function Account() {
     router.push('/account/create');
   }
 
-  async function handleLogin(e: FormEvent) {
-    e.preventDefault();
-    const email = e.target[0].value;
-    const password = e.target[0].value;
+  const schema = yup.object({
+    email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatório'),
+    password: yup.string().required('A senha é obrigatória')
+  })
+
+  const { reset, register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+    mode: 'onBlur'
+  })
+
+  const onSubmit = async (data: LoginProps) => {
+    const email = data.email;
+    const password = data.password;
 
     try {
       setLoading(true);
       await login(email, password);
       setLoading(false);
-    } catch {
+      reset()
+      setError(null);
+    } catch (err) {
+      if (err.response.data.message) {
+        setError(err.response.data.message)
+      }
+      reset()
+      setError(null);
       setLoading(false);
     }
-
-  }
+  };
 
   return (
     <div className={styles.accountContainer}>
@@ -51,10 +74,28 @@ export default function Account() {
           <FiArrowLeft size={22} />
         </button>
 
-        <form onSubmit={handleLogin}>
-          <Input type="email" id="email" placeholder="Digite o seu e-mail" />
-          <Input type="password" id="password" placeholder="Digite a sua senha" />
-          <Button type="submit" disabled={loading}>{loading ? 'ENTRANDO' : 'ENTRAR'}</Button>
+        {error && (
+          <div className={styles.error}>
+            <p>{error}</p>
+          </div>
+        )}
+
+        <form id="contentform" onSubmit={handleSubmit(onSubmit)} >
+          <Input
+            type="email"
+            id="email"
+            placeholder="Digite o seu e-mail"
+            error={errors.email?.message}
+            register={register("email")}
+          />
+          <Input
+            type="password"
+            id="password"
+            placeholder="Digite a sua senha"
+            error={errors.password?.message}
+            register={register("password")}
+          />
+          <Button type="submit" form="contentform" disabled={loading}>{loading ? 'ENTRANDO' : 'ENTRAR'}</Button>
         </form>
 
         <Button disabled={loading} styleType="outline" onClick={handleNavigateToCreateAccount}>CRIAR CONTA</Button>
@@ -68,3 +109,9 @@ export default function Account() {
     </div>
   )
 }
+
+export const getServerSideProps = withSSRGuest(async () => {
+  return {
+    props: {}
+  }
+});

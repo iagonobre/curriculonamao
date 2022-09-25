@@ -5,7 +5,7 @@ export function LoadThemeProvider({ children }) {
   const { theme } = useTheme();
 
   return (
-    <div data-theme={theme} id="teste" data-font="normal">
+    <div className="teste" data-theme={theme} >
       {children}
     </div>
   )

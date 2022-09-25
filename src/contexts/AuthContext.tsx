@@ -1,6 +1,9 @@
 import {
   createContext, ReactNode, useEffect, useState,
 } from 'react';
+
+import { setCookie, parseCookies, destroyCookie } from 'nookies';
+import Router from 'next/router';
 import api from '../services/api';
 
 type User = {
@@ -18,7 +21,8 @@ type User = {
 type AuthContextType = {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  refresh: (refreshToken: string) => Promise<void>;
+  logout: () => Promise<void>;
+  refresh: () => Promise<void>;
 }
 
 type AuthContextProviderProps = {
@@ -32,49 +36,75 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   useEffect(() => {
     async function getUpdateFont() {
-      const user = localStorage.getItem("user")
+      const { '@cnm:refreshToken': refreshToken } = parseCookies();
 
-      if (user) {
-        setUser(JSON.parse(user));
+      if (refreshToken) {
+        await refresh()
+      }
+
+      if (!refreshToken) {
+        logout()
       }
     }
     getUpdateFont()
   }, []);
 
-  async function refresh(refreshToken: string) {
-    try {
-      const response = await api.post('/user/refresh', {
-        email: user.user.email,
-        refreshToken,
-      })
+  async function refresh() {
+    const { '@cnm:refreshToken': refreshToken } = parseCookies();
+    const { '@cnm:email': email } = parseCookies();
 
-      const updatedUser = await api.get('/user', {
-        headers: { Authorization: `Bearer ${response.data.token}` }
-      })
+    const response = await api.post('/user/refresh', {
+      email,
+      refreshToken
+    })
 
-      setUser(updatedUser.data)
-      localStorage.setItem("user", JSON.stringify(user))
-    } catch (err) {
-      //tratar erro
-    }
+    setCookie(undefined, '@cnm:token', response.data.token, {
+      maxAge: 60 * 60 * 24 * 30, //30 days
+      path: '/'
+    })
+
+    setCookie(undefined, '@cnm:refreshToken', response.data.refreshToken, {
+      maxAge: 60 * 60 * 24 * 30, //30 days
+      path: '/'
+    })
   }
 
   async function login(email: string, password: string) {
-    try {
-      const response = await api.post('/login', {
-        username: email,
-        password,
-      })
+    const response = await api.post('/login', {
+      username: email,
+      password,
+    })
 
-      setUser(response.data)
-      localStorage.setItem("user", JSON.stringify(user))
-    } catch (err) {
-      //tratar erro
-    }
+    setUser(response.data)
+
+    setCookie(undefined, '@cnm:token', response.data.token, {
+      maxAge: 60 * 60 * 24 * 30, //30 days
+      path: '/'
+    })
+
+    setCookie(undefined, '@cnm:refreshToken', response.data.refreshToken, {
+      maxAge: 60 * 60 * 24 * 30, //30 days
+      path: '/'
+    })
+
+    setCookie(undefined, '@cnm:email', response.data.user.email, {
+      path: '/'
+    })
+
+    Router.push('/app')
+  }
+
+  async function logout() {
+    setUser(null);
+    destroyCookie(undefined, '@cnm:token');
+    destroyCookie(undefined, '@cnm:refreshToken');
+
+    Router.push('/account')
   }
 
   return (
     <AuthContext.Provider value={{
+      logout,
       user,
       login,
       refresh

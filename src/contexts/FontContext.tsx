@@ -32,21 +32,35 @@ export function FontContextProvider({ children }: FontContextProviderProps) {
       }
 
       setFontSize(fontSize as FontProps);
-
+      if (fontSize === 'normal') {
+        document.getElementById("html").style.fontSize = '95.75%'
+      } else if (fontSize === 'medium') {
+        document.getElementById("html").style.fontSize = '110%'
+      } else if (fontSize === 'large') {
+        document.getElementById("html").style.fontSize = '120%'
+      }
     }
     getUpdateFont()
   }, []);
+
+  useEffect(() => {
+    if (fontSize === 'normal') {
+      document.getElementById("html").style.fontSize = '95.75%'
+    } else if (fontSize === 'medium') {
+      document.getElementById("html").style.fontSize = '110%'
+    } else if (fontSize === 'large') {
+      document.getElementById("html").style.fontSize = '120%'
+    }
+  }, [fontSize])
 
   function increaseFont() {
     const currentPosition = arrayRef.indexOf(fontSize);
 
     if (currentPosition < 2) {
       setFontSize(arrayRef[currentPosition + 1])
-
-      localStorage.setItem("fontSize", fontSize)
+      localStorage.setItem("fontSize", arrayRef[currentPosition + 1])
     }
 
-    console.log(fontSize)
   }
 
   function decreaseFont() {
@@ -54,16 +68,15 @@ export function FontContextProvider({ children }: FontContextProviderProps) {
 
     if (currentPosition > 0) {
       setFontSize(arrayRef[currentPosition - 1])
-      localStorage.setItem("fontSize", fontSize)
-
-      console.log(fontSize)
+      localStorage.setItem("fontSize", arrayRef[currentPosition - 1])
     }
+
   }
 
   function turnNormalFont() {
     setFontSize('normal')
-
-    localStorage.setItem("fontSize", fontSize)
+    localStorage.setItem("fontSize", 'normal')
+    document.getElementById("html").style.fontSize = '95.75%'
   }
 
   return (

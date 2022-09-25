@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { AcessibilityScroll } from '../components/AccessibilityScroll';
-import { Button } from '../components/Button';
 import { useFont } from '../hooks/font';
 import { useTheme } from '../hooks/theme';
 import styles from './home.module.scss';

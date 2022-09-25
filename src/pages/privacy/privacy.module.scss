@@ -1,0 +1,38 @@
+.container {
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  div {
+    margin: 3rem 0rem;
+    width: 70%;
+
+    h1 {
+      color: var(--text);
+    }
+  
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    h2 {
+      margin-top: 1rem;
+      color: var(--text);
+    }
+
+    p {
+      text-align: justify;
+      color: var(--text);
+    }
+    
+    ul {
+      li {
+        text-align: justify;
+        color: var(--text);
+      }
+    }
+  }
+}

@@ -3,9 +3,13 @@ import styles from './style.module.scss';
 
 import { FiSettings, FiLogOut } from 'react-icons/fi';
 import { useTheme } from "../../hooks/theme";
+import { useAuth } from "../../hooks/auth";
+import { useFont } from "../../hooks/font";
 
 export function Header() {
   const { changeTheme } = useTheme();
+  const { logout } = useAuth();
+  const { decreaseFont, turnNormalFont, increaseFont } = useFont();
 
   return (
     <header className={styles.headerStyle}>
@@ -17,13 +21,13 @@ export function Header() {
         </Link>
       </div>
       <div className={styles.buttonContainer}>
-        <button>
+        <button onClick={() => increaseFont()}>
           <img src="/assets/text-icon-plus.svg" alt="Aumentar Textos" />
         </button>
-        <button>
+        <button onClick={() => turnNormalFont()}>
           <img src="/assets/text-icon.svg" alt="Textos em tamanho padrão" />
         </button>
-        <button>
+        <button onClick={() => decreaseFont()}>
           <img src="/assets/text-icon-less.svg" alt="Diminuir Textos" />
         </button>
         <button onClick={() => changeTheme()}>
@@ -47,7 +51,7 @@ export function Header() {
                 Editar Perfil
               </button>
             </Link>
-            <button>
+            <button onClick={() => logout()}>
               <FiLogOut size={20} color="#E33D3D" />
               Sair
             </button>

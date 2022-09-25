@@ -3,6 +3,7 @@ import { FiArrowLeft } from 'react-icons/fi';
 import { AcessibilityScroll } from '../../../components/AccessibilityScroll';
 import { Button } from '../../../components/Button';
 import { Input } from '../../../components/Input';
+import { withSSRAuth } from '../../../utils/withSSRAuth';
 import styles from './perfil.module.scss';
 
 
@@ -31,7 +32,7 @@ export default function Perfil() {
             <h3>Editar Perfil</h3>
             <div />
             <Link href=""><a>Alterar minha senha</a></Link>
-            <Link href=""><a>Política de Privacidade</a></Link>
+            <Link href="/privacy"><a>Política de Privacidade</a></Link>
             <Link href=""><a>Excluir minha conta</a></Link>
           </div>
         </div>
@@ -39,3 +40,9 @@ export default function Perfil() {
     </>
   )
 }
+
+export const getServerSideProps = withSSRAuth(async () => {
+  return {
+    props: {}
+  }
+});
