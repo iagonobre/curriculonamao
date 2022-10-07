@@ -106,8 +106,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     destroyCookie(undefined, '@cnm:email');
     destroyCookie(undefined, '@cnm:token');
     destroyCookie(undefined, '@cnm:refreshToken');
-
-    Router.push('/')
   }
 
   return (

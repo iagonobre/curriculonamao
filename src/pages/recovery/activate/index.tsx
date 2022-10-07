@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { FiArrowLeft } from 'react-icons/fi'
 
 import { AcessibilityScroll } from "../../../components/AccessibilityScroll";
 import { AccountBox } from "../../../components/AccountBox";
@@ -27,10 +26,6 @@ export default function Account() {
   const [success, setSuccess] = useState('');
 
   const { token } = router.query
-
-  function handleGoBack() {
-    router.back();
-  }
 
   const schema = yup.object({
     password: yup.string().required('A senha é obrigatória').min(6, 'É necessário ter mais de 6 catacteres'),
@@ -75,10 +70,6 @@ export default function Account() {
     }
   };
 
-  function handleNavigateToAccount() {
-    router.push('/account')
-  }
-
   if (success) {
     return (
       <div className={styles.accountContainer}>
@@ -89,7 +80,9 @@ export default function Account() {
             <p>{success}</p>
           </div>
 
-          <Button onClick={handleNavigateToAccount} styleType="outline">Entrar</Button>
+          <Link href="/account" passHref>
+            <Button styleType="outline">Entrar</Button>
+          </Link>
         </AccountBox>
 
       </div>

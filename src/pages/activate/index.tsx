@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { FiArrowLeft } from 'react-icons/fi'
 
 import { AcessibilityScroll } from "../../components/AccessibilityScroll";
 import { AccountBox } from "../../components/AccountBox";
@@ -12,7 +11,9 @@ import styles from './activate.module.scss';
 
 export default function Account() {
   const router = useRouter();
-  const { token, newEmail } = router.query
+
+  const token = router.query.token;
+  const newToken = router.query.newToken;
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -20,12 +21,10 @@ export default function Account() {
   useEffect(() => {
     async function activateAccount() {
       if (token && !error) {
-        const newToken = token as string
-        const [sendToken,] = newToken.split('%')
         try {
           await api.post('/user/activate', {
-            token: sendToken,
-            newEmail: newEmail || null
+            token,
+            newEmail: newToken ? newToken : null,
           })
           setSuccess('A sua conta foi ativada com sucesso, realize o login no botão abaixo')
         } catch (err) {
@@ -34,41 +33,38 @@ export default function Account() {
       }
     }
     activateAccount()
-  }, [token, newEmail, error])
-
-  function handleNavigateToAccount() {
-    router.push('/account')
-  }
-
-  function handleNavigateToHome() {
-    router.push('/')
-  }
-
-  if (!error || !success) {
-    return null;
-  }
+  }, [error, token, newToken])
 
   return (
     <div className={styles.accountContainer}>
       <AcessibilityScroll />
 
       <AccountBox>
-        {error ? (
-          <div className={styles.form}>
+        <div className={styles.form}>
+          {error ? (
             <div className={styles.error}>
               <p>{error}</p>
             </div>
-            <Button onClick={handleNavigateToHome} styleType="outline">Página Inicial</Button>
-          </div>
-        ) : (
-          <div className={styles.form}>
-            <div className={styles.success}>
-              <p>{success}</p>
-            </div>
-            <img src="/assets/recovery.svg" alt="Mulher de cabelo preto segurando um avião" />
-            <Button onClick={handleNavigateToAccount} styleType="outline">Entrar</Button>
-          </div>
-        )}
+          ) : (
+            success && (
+              <div className={styles.success}>
+                <p>{success}</p>
+              </div>
+            )
+          )}
+          <img src="/assets/recovery.svg" alt="Mulher de cabelo preto segurando um avião" />
+          {error ? (
+            <Link href="/" passHref>
+              <Button styleType="outline">Página Inicial</Button>
+            </Link>
+          ) : (
+            success && (
+              <Link href="/account" passHref>
+                <Button styleType="outline">Entrar</Button>
+              </Link>
+            )
+          )}
+        </div>
       </AccountBox>
     </div>
   )

@@ -6,6 +6,7 @@ import { useTheme } from "../../hooks/theme";
 import { useAuth } from "../../hooks/auth";
 import { useFont } from "../../hooks/font";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 type HeaderProps = {
   withoutProfile?: boolean
@@ -13,6 +14,7 @@ type HeaderProps = {
 
 export function Header({ withoutProfile }: HeaderProps) {
   const { changeTheme } = useTheme();
+  const router = useRouter();
   const { logout } = useAuth();
   const { decreaseFont, turnNormalFont, increaseFont } = useFont();
 
@@ -62,7 +64,10 @@ export function Header({ withoutProfile }: HeaderProps) {
                   Editar Perfil
                 </button>
               </Link>
-              <button onClick={() => logout()}>
+              <button onClick={() => {
+                router.push('/')
+                logout()
+              }}>
                 <FiLogOut size={20} color="#E33D3D" />
                 Sair
               </button>
