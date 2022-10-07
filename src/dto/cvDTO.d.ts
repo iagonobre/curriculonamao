@@ -8,6 +8,7 @@ export type CvProps = {
   fullName: string
   bornDate: Date
   email: string
+  phone: string
   maritalStatus: string
   linkedin: string | null
   cep: string | null
@@ -16,6 +17,7 @@ export type CvProps = {
   city: string
   state: string
   number: number | null
+  purpose: string
   cvPhotoURL: string | null
   cidNumber: number | null
   deficiencyLevel: string | null

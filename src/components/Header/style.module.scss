@@ -39,6 +39,22 @@
 
   list-style: none;
   background: none;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 29px;
+
+    img {
+      width: 54px;
+      height: 54px;
+      border-radius: 29px;
+    }
+  }
+
 }
 
 .dropdownContent {
@@ -53,6 +69,7 @@
   border-radius: 8px;
   margin-left: 1rem;
   margin-top: 0.25rem;
+
 
   p {
     font-family: "Chivo";

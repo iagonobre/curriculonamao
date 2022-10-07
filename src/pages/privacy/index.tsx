@@ -5,7 +5,7 @@ import { Header } from '../../components/Header';
 export default function Privacy() {
   return (
     <>
-      <Header />
+      <Header withoutProfile />
       <div className={styles.container}>
         <div >
           <h1>Política de Privacidade</h1>

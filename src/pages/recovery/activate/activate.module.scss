@@ -1,3 +1,5 @@
+@media (max-device-width: 900px) {}
+
 .accountContainer {
   width: 100%;
   height: 100vh;
@@ -28,8 +30,23 @@
 
     button {
       margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
     }
   }
+}
+
+.recoveryStyle {
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+
+  a {
+    font-family: "Chivo";
+    font-size: 1rem;
+    text-decoration: underline;
+    color: var(--primary);
+  }
+
 }
 
 .error {
@@ -47,12 +64,12 @@
   }
 }
 
-.alert {
+.success {
   width: 100%;
-  background-color: var(--tertiary);
+  background-color: var(--primary);
   padding: 0.5rem;
   border-radius: 3px;
-  margin-top: 1rem;
+  margin: 2rem 0rem;
 
   p {
     text-align: center;
@@ -60,4 +77,5 @@
     font-size: 1rem;
     color: var(--background);
   }
+  
 }

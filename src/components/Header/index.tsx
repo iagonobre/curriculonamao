@@ -5,11 +5,19 @@ import { FiSettings, FiLogOut } from 'react-icons/fi';
 import { useTheme } from "../../hooks/theme";
 import { useAuth } from "../../hooks/auth";
 import { useFont } from "../../hooks/font";
+import Image from "next/image";
 
-export function Header() {
+type HeaderProps = {
+  withoutProfile?: boolean
+}
+
+export function Header({ withoutProfile }: HeaderProps) {
   const { changeTheme } = useTheme();
   const { logout } = useAuth();
   const { decreaseFont, turnNormalFont, increaseFont } = useFont();
+
+  const { user } = useAuth();
+  const photoURL = user?.photoURL ? `${process.env.NEXT_PUBLIC_API_URL}/profile/${user?.photoURL}` : '/assets/avatar.svg'
 
   return (
     <header className={styles.headerStyle}>
@@ -33,30 +41,34 @@ export function Header() {
         <button onClick={() => changeTheme()}>
           <img src="/assets/contrast.svg" alt="Contraste" />
         </button>
-        <details>
-          <summary className={styles.dropdownTrigger}>
-            <img src="/assets/profile.png" alt="" />
-          </summary>
+        {!withoutProfile && (
+          <details>
+            <summary className={styles.dropdownTrigger}>
+              <div>
+                <Image src={photoURL} alt="Foto de perfil" width="100" height="100" layout='intrinsic' />
+              </div>
+            </summary>
 
-          <div className={styles.dropdownContent}>
-            <div className={styles.dropUserContent}>
-              <p>Iago Nobre Silva</p>
-              <small>iagonobre22@gmail.com</small>
-            </div>
+            <div className={styles.dropdownContent}>
+              <div className={styles.dropUserContent}>
+                <p>{user?.name ?? 'Carregando...'}</p>
+                <small>{user?.email ?? 'Carregando...'}</small>
+              </div>
 
-            <div className={styles.line} />
-            <Link passHref href="/app/perfil">
-              <button>
-                <FiSettings size={20} />
-                Editar Perfil
+              <div className={styles.line} />
+              <Link passHref href="/app/perfil">
+                <button>
+                  <FiSettings size={20} />
+                  Editar Perfil
+                </button>
+              </Link>
+              <button onClick={() => logout()}>
+                <FiLogOut size={20} color="#E33D3D" />
+                Sair
               </button>
-            </Link>
-            <button onClick={() => logout()}>
-              <FiLogOut size={20} color="#E33D3D" />
-              Sair
-            </button>
-          </div>
-        </details>
+            </div>
+          </details>
+        )}
       </div>
     </header>
   )

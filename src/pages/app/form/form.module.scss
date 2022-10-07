@@ -20,6 +20,7 @@
     margin-bottom: 1.5rem;
     font-size: 1.3rem;
     font-weight: bold;
+    color: var(--text)
   }
 
   p {
@@ -188,5 +189,79 @@
       padding: 0;
       height: 0;
     }
+  }
+}
+
+.addButton {
+  width: 90%;
+  height: 4rem;
+  border-radius: 8px;
+  border-color: var(--shape2);
+  border-style: dashed;
+
+  margin-bottom: 1rem;
+
+  svg {
+    color: var(--shape2);
+  }
+  
+}
+
+.line {
+  width: 90%;
+  height: 2px;
+  margin: 2rem 0rem;  
+  background-color: var(--text);
+}
+
+.fieldsContainer {
+  button {
+    background-color: var(--shape1);
+    color: var(--alert);
+    padding: 0.3rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 2px solid var(--alert);
+    transition: 0.3s;
+  }
+
+  button:hover {
+    opacity: 0.8;
+  }
+}
+
+.checkbox {
+  display: flex;
+  margin-top: 0.5rem;
+  justify-content: center;
+
+  label {
+    margin-left: 0.75rem;
+    font-family: "Chivo";
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    height: 1.3rem;
+    width: 1.3rem;
+  }
+}
+
+.error {
+  width: 100%;
+  background-color: var(--alert);
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: 2rem 0rem;
+
+  span {
+    text-align: center;
+    font-family: "Chivo";
+    font-size: 1rem;
+    color: var(--light);
   }
 }

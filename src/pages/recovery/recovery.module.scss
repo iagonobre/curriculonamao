@@ -33,6 +33,15 @@
       margin-top: 1.5rem;
     }
 
+    small {
+      font-family: "Chivo";
+      font-weight: 100;
+      font-size: 1rem;
+      text-align: center;
+      color: var(--text);
+      margin-top: 1.5rem;
+    }
+
     div {
       margin-top: 1.5rem;
     }
@@ -40,5 +49,20 @@
     button {
       margin-top: 2.5rem;
     }
+  }
+}
+
+.error {
+  width: 100%;
+  background-color: var(--alert);
+  padding: 0.5rem;
+  border-radius: 3px;
+  margin: 1rem 0rem;
+
+  p {
+    text-align: center;
+    font-family: "Chivo";
+    font-size: 1rem;
+    color: var(--background);
   }
 }

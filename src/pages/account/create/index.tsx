@@ -26,6 +26,7 @@ export default function AccountCreate() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [alert, setAlert] = useState('');
 
   function handleGoBack() {
     router.back();
@@ -34,8 +35,8 @@ export default function AccountCreate() {
   const schema = yup.object({
     name: yup.string().required('O nome é obrigatório'),
     email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatório'),
-    password: yup.string().required('A senha é obrigatória'),
-    passwordCheck: yup.string().required('A senha é obrigatória')
+    password: yup.string().required('A senha é obrigatória').min(6, 'É necessário ter mais de 6 catacteres'),
+    passwordCheck: yup.string().required('A senha é obrigatória').min(6, 'É necessário ter mais de 6 catacteres'),
   })
 
   const { reset, register, handleSubmit, formState: { errors } } = useForm({
@@ -65,6 +66,7 @@ export default function AccountCreate() {
 
       console.log(response.data)
 
+      setAlert(`Foi enviado um email para ${email} com as instruções para realizar a ativação da sua conta.`)
       setLoading(false);
       setError(null);
       reset()
@@ -90,6 +92,13 @@ export default function AccountCreate() {
         {error && (
           <div className={styles.error}>
             <p>{error}</p>
+          </div>
+        )}
+
+
+        {alert && (
+          <div className={styles.alert}>
+            <p>{alert}</p>
           </div>
         )}
 

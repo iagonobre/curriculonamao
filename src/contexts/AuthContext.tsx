@@ -7,15 +7,12 @@ import Router from 'next/router';
 import api from '../services/api';
 
 type User = {
-  user: {
-    id: number;
-    email: string;
-    name: string;
-    refreshToken: string;
-    admin?: boolean;
-  };
-  token: string;
+  id: number;
+  email: string;
+  name: string;
   refreshToken: string;
+  admin?: boolean;
+  photoURL: string;
 }
 
 type AuthContextType = {
@@ -53,10 +50,20 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     const { '@cnm:refreshToken': refreshToken } = parseCookies();
     const { '@cnm:email': email } = parseCookies();
 
+    if (!email) {
+      return logout()
+    }
+
     const response = await api.post('/user/refresh', {
       email,
       refreshToken
     })
+
+    const userResponse = await api.get('/user', {
+      headers: { Authorization: `Bearer ${response.data.token}` }
+    })
+
+    setUser(userResponse.data)
 
     setCookie(undefined, '@cnm:token', response.data.token, {
       maxAge: 60 * 60 * 24 * 30, //30 days
@@ -75,7 +82,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       password,
     })
 
-    setUser(response.data)
+    setUser(response.data.user)
 
     setCookie(undefined, '@cnm:token', response.data.token, {
       maxAge: 60 * 60 * 24 * 30, //30 days
@@ -96,10 +103,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function logout() {
     setUser(null);
+    destroyCookie(undefined, '@cnm:email');
     destroyCookie(undefined, '@cnm:token');
     destroyCookie(undefined, '@cnm:refreshToken');
 
-    Router.push('/account')
+    Router.push('/')
   }
 
   return (

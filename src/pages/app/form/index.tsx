@@ -1,22 +1,28 @@
+import { useEffect, useState } from 'react';
 
-import { Header } from '../../../components/Header';
-import styles from './form.module.scss';
-
-import { useForm } from "react-hook-form";
-
-import { SelectForm } from '../../../components/SelectForm';
-import { CheckboxForm } from '../../../components/CheckboxForm';
-import { InputForm } from '../../../components/InputForm';
-
-import { useCallback, useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
+import * as animationData from '../../../../public/typing.json'
 
 import axios from 'axios';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, useFieldArray } from "react-hook-form";
 import * as yup from "yup";
-import * as animationData from '../../../../public/typing.json'
+
 import { withSSRAuth } from '../../../utils/withSSRAuth';
+
+import { Header } from '../../../components/Header';
+import { SelectForm } from '../../../components/SelectForm';
+import { InputForm } from '../../../components/InputForm';
+
+import styles from './form.module.scss';
+import { CvProps } from '../../../dto/cvDTO';
+import { FiPlusCircle } from 'react-icons/fi';
+import api from '../../../services/api';
+
+import { useAuth } from '../../../hooks/auth';
+import Router from 'next/router';
+import { parseCookies } from 'nookies';
 
 type State = {
   id: number;
@@ -24,8 +30,12 @@ type State = {
 }
 
 export default function Form() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   const [states, setStates] = useState<State[]>();
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false);
+
+  const { refresh } = useAuth();
 
   useEffect(() => {
     async function getStates() {
@@ -39,46 +49,184 @@ export default function Form() {
   }, [])
 
   const schema = yup.object({
-    name: yup.string().required('O nome é obrigatório'),
+    title: yup.string().required('O nome do currículo é obrigatório'),
+    fullName: yup.string().required('O nome é obrigatório'),
     bornDate: yup.date().required('A data é obrigatória'),
     email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatório'),
-    phone: yup.string().required(),
+    phone: yup.string().required('O telefone é obrigatório'),
     linkedin: yup.string().url(),
     street: yup.string(),
     district: yup.string().required('O bairro é obrigatório'),
     city: yup.string().required('A cidade é obrigatório'),
-    state: yup.string().required('O estado é obrigatório'),
     number: yup.string(),
     objetivo: yup.string(),
-    nomeempresa: yup.string().required('O nome da empresa é obrigatório'),
-    cargo: yup.string().required('Informar o cargo é obrigatório'),
-    inicio: yup.date().required('A data é obrigatória'),
-    fim: yup.date().required('A data é obrigatória'),
-    descricao: yup.string().required('A descrição é obrigatória'),
-    nomeinstituicao: yup.string().required('O nome da instituição é obrigatório'),
-    curso: yup.string().required('O nome do curso é obrigatório'),
-    beginExperience: yup.date().required('A data é obrigatória'),
-    endExperience: yup.date().required('A data é obrigatória'),
-    cursodeaperfeicoamento: yup.string(),
-    nomedainstituicao: yup.string(),
-    nivelaperfeicoamento: yup.string(),
-    cargahoraria: yup.string(),
-    beginCourse: yup.date(),
-    endCourse: yup.date(),
-    nomehabilidade: yup.string(),
-    CID: yup.string().required('O CID é obrigatória'),
-    graudedeficiencia: yup.string().required('O grau de deficiência é obrigatória'),
-    equipamento: yup.string().required('Informar se precisa ou não de equipamentos é obrigatório'),
-    limitacoes: yup.string().required('Informar se tem ou não limitações é obrigatório'),
-    infoadicionais: yup.string(),
+    professionalExperiences: yup.array().of(
+      yup.object().shape({
+        businessName: yup.string().required('O nome da empresa é obrigatório'),
+        position: yup.string().required('Informar o cargo é obrigatório'),
+        startDate: yup.date().required('A data é obrigatória'),
+        description: yup.string().required('A descrição é obrigatória'),
+      })
+    ),
+    schoolEducation: yup.array().of(
+      yup.object().shape({
+        position: yup.string().required('O nível acadêmico é obrigatório'),
+        schoolName: yup.string().required('O nome da instituição é obrigatório'),
+        course: yup.string().required('O nome do curso é obrigatório'),
+        startDate: yup.date().required('A data é obrigatória'),
+      })
+    ),
+    aditonalCourses: yup.array().of(
+      yup.object().shape({
+        courseName: yup.string().required('O curso é obrigatório'),
+        schoolName: yup.string().required('O nome da escola é obrigatório'),
+        totalTime: yup.string().required('A carga horária é obrigatória'),
+        startDate: yup.date().required('A data inicial é obrigatória'),
+      })
+    ),
+    ability: yup.array().of(
+      yup.object().shape({
+        name: yup.string().required('O nome é obrigatório'),
+      })
+    ),
+    cidNumber: yup.string(),
+    deficiencyLevel: yup.string(),
+    addaptationDescription: yup.string(),
+    limitationDescription: yup.string(),
+    aditionalInformation: yup.string(),
   })
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(schema),
-    mode: 'onBlur'
-  })
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    trigger,
+    formState: { errors } } = useForm<CvProps>({
+      resolver: yupResolver(schema),
+      mode: 'onChange'
+    })
 
-  const onSubmit = (data) => console.log(data);
+  const {
+    fields: experienceFields,
+    remove: removeExperiences,
+    append: appendExperiences
+  } = useFieldArray({
+    control,
+    name: "professionalExperiences",
+  });
+
+  const {
+    fields: schoolFields,
+    remove: removeSchool,
+    append: appendSchool
+  } = useFieldArray({
+    control,
+    name: "schoolEducation",
+  });
+
+  const {
+    fields: coursesFields,
+    remove: removeCourses,
+    append: appendCourses
+  } = useFieldArray({
+    control,
+    name: "aditonalCourses",
+  });
+
+  const {
+    fields: abilityFields,
+    remove: removeAbility,
+    append: appendAbility
+  } = useFieldArray({
+    control,
+    name: "ability",
+  });
+
+  const onSubmit = async (data: CvProps) => {
+    if (Object.keys(errors).length > 0) {
+      return setError(
+        `Os seguintes campos não foram preenchidos:
+        ${Object.keys(errors).map((error) => {
+          console.log(error)
+        })}
+      `)
+    }
+
+    try {
+      setLoading(true);
+      await refresh()
+      const { '@cnm:token': token } = parseCookies();
+
+      const {
+        title,
+        fullName,
+        bornDate,
+        email,
+        phone,
+        maritalStatus,
+        linkedin,
+        cep,
+        address,
+        district,
+        city,
+        state,
+        number,
+        purpose,
+        cidNumber,
+        deficiencyLevel,
+        haveCertificate,
+        addaptationDescription,
+        limitationDescription,
+        aditionalInformation
+      } = data;
+
+      const response = await api.post('/cv', {
+        resume: {
+          title,
+          fullName,
+          bornDate,
+          email,
+          phone,
+          maritalStatus,
+          linkedin,
+          cep,
+          address,
+          district,
+          city,
+          state,
+          number: Number(number),
+          purpose,
+          cidNumber: Number(cidNumber),
+          deficiencyLevel,
+          haveCertificate,
+          addaptationDescription,
+          limitationDescription,
+          aditionalInformation
+        },
+        professionalExperiences: data.professionalExperiences,
+        schoolEducation: data.schoolEducation,
+        aditionalCourses: data.aditonalCourses,
+        ability: data.ability,
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      console.log(response.data)
+
+      setLoading(false);
+      setError(null);
+      reset()
+      Router.push('/app')
+    } catch (err) {
+      if (err.response.data.message) {
+        setError(err.response.data.message)
+      }
+      reset()
+      Router.push('/app')
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -146,6 +294,24 @@ export default function Form() {
         <form id="contentform" className={styles.form} onSubmit={handleSubmit(onSubmit)}>
           {step === 0 && (
             <>
+              {error && (
+                <div className={styles.error}>
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <div className={styles.inputContainer}>
+                <InputForm
+                  inputSize="large"
+                  type="title"
+                  placeholder="Currículo para Empresa"
+                  title="Nome do Currículo*"
+                  id="title"
+                  error={errors.title?.message}
+                  register={register("title")}
+                />
+              </div>
+
               <h3>Informações Básicas</h3>
 
               <div className={styles.inputContainer}>
@@ -154,9 +320,9 @@ export default function Form() {
                   type="text"
                   placeholder="Ana Maria da Silva"
                   title="Nome Completo*"
-                  id="name"
-                  error={errors.name?.message}
-                  register={register("name")}
+                  id="fullName"
+                  error={errors.fullName?.message}
+                  register={register("fullName")}
                 />
 
                 <InputForm
@@ -175,6 +341,7 @@ export default function Form() {
                   type="email"
                   title="Email*"
                   id="email"
+                  placeholder="anamaria@gmail.com"
                   error={errors.email?.message}
                   register={register("email")}
                 />
@@ -192,8 +359,8 @@ export default function Form() {
               <div className={styles.inputContainer}>
                 <SelectForm
                   title="Estado Civil*"
-                  id="maritalstatus"
-                  register={register("maritalstatus")}
+                  id="maritalStatus"
+                  register={register("maritalStatus")}
                 >
                   <option value="" disabled selected>Selecionar</option>
                   <option value="Solteiro">Solteiro</option>
@@ -233,9 +400,9 @@ export default function Form() {
                   type="text"
                   placeholder="Avenida Machado de Assis"
                   title="Rua"
-                  id="street"
-                  error={errors.street?.message}
-                  register={register("street")}
+                  id="address"
+                  error={errors.address?.message}
+                  register={register("address")}
                 />
               </div>
 
@@ -295,284 +462,401 @@ export default function Form() {
                   type="text"
                   placeholder="Escreva qual o seu cargo ou área de interesse"
                   title="Objetivo"
-                  id="objetivo"
-                  register={register("objetivo")}
+                  id="purpose"
+                  register={register("purpose")}
                 />
               </div>
+
+              {error && (
+                <div className={styles.error}>
+                  <span>{error}</span>
+                </div>
+              )}
 
               <h3>Experiência Profissional</h3>
               <p>Dica! Recomendamos que você escreva seus últimos três empregos ou as três experiências profissionais mais semelhantes ao seu objetivo atual.</p>
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="large"
-                  type="text"
-                  placeholder="Márcio Calçados"
-                  title="Nome da empresa*"
-                  id="nomeempresa"
-                  error={errors.nomeempresa?.message}
-                  register={register("nomeempresa")}
-                />
-              </div>
+              {experienceFields.map((experience, index) => (
+                <div key={experience.id} className={styles.fieldsContainer}>
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="large"
-                  type="text"
-                  placeholder="Gerente de Vendas"
-                  title="Cargo ou Posição*"
-                  id="cargo"
-                  error={errors.cargo?.message}
-                  register={register("cargo")}
-                />
-              </div>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="large"
+                      type="text"
+                      placeholder="Márcio Calçados"
+                      title="Nome da empresa*"
+                      id="businessName"
+                      error={errors?.professionalExperiences?.[index]?.businessName?.message}
+                      register={register(`professionalExperiences.${index}.businessName`)}
+                    />
+                  </div>
 
-              <div className={styles.inputContainer}>
-                <CheckboxForm
-                  id="namee"
-                >
-                  Experiência em andamento
-                </CheckboxForm>
-              </div>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="large"
+                      type="text"
+                      placeholder="Gerente de Vendas"
+                      title="Cargo ou Posição*"
+                      id="position"
+                      error={errors.professionalExperiences?.[index]?.position?.message}
+                      register={register(`professionalExperiences.${index}.position`)}
+                    />
+                  </div>
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="middle"
-                  type="date"
-                  placeholder="DD/MM/AAAA"
-                  title="Início*"
-                  id="inicio"
-                  error={errors.inicio?.message}
-                  register={register("inicio")}
-                />
+                  <div className={styles.inputContainer}>
+                    <div className={styles.checkbox} >
+                      <input
+                        type="checkbox"
+                        id="professionalExperiencesNowExperience"
+                        {...register(`professionalExperiences.${index}.nowExperience`)}
+                      />
+                      <label>
+                        Experiência em andamento
+                      </label>
+                    </div>
+                  </div>
 
-                <InputForm
-                  inputSize="middle"
-                  type="date"
-                  placeholder="DD/MM/AAAA"
-                  title="Fim"
-                  id="fim"
-                  error={errors.fim?.message}
-                  register={register("fim")}
-                />
-              </div>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="middle"
+                      type="date"
+                      placeholder="DD/MM/AAAA"
+                      title="Início*"
+                      id="startDate"
+                      error={errors.professionalExperiences?.[index]?.startDate?.message}
+                      register={register(`professionalExperiences.${index}.startDate`)}
+                    />
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="large"
-                  type="text"
-                  placeholder="Descreva as atividades mais importantes que você exerceu"
-                  title="Descrição:*"
-                  id="descricao"
-                  error={errors.descricao?.message}
-                  register={register("descricao")}
-                />
-              </div>
+                    <InputForm
+                      inputSize="middle"
+                      type="date"
+                      placeholder="DD/MM/AAAA"
+                      title="Fim"
+                      id="endDate"
+                      error={errors.professionalExperiences?.[index]?.endDate?.message}
+                      register={register(`professionalExperiences.${index}.endDate`)}
+                    />
+                  </div>
+
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="large"
+                      type="text"
+                      placeholder="Descreva as atividades mais importantes que você exerceu"
+                      title="Descrição:*"
+                      id="description"
+                      error={errors.professionalExperiences?.[index]?.description?.message}
+                      register={register(`professionalExperiences.${index}.description`)}
+                    />
+                  </div>
+                  <button onClick={() => (
+                    removeExperiences(index)
+                  )}>Remover Experiência</button>
+                  <div className={styles.line} />
+                </div>
+              ))}
+
+              <button onClick={() => (
+                appendExperiences({})
+              )} className={styles.addButton}>
+                <FiPlusCircle size={48} />
+              </button>
+
             </>
           )}
 
           {step === 2 && (
             <>
+              {error && (
+                <div className={styles.error}>
+                  <span>{error}</span>
+                </div>
+              )}
               <h3>Formação Acadêmica</h3>
-              <div className={styles.inputContainer}>
-                <SelectForm
-                  title="Tipo ou nível acadêmico*"
-                  id="nivelacademico"
-                  register={register("nivelacademico")}
-                >
-                  <option value="" disabled selected>Selecionar</option>
-                  <option value="Ensino Fundamental I">Ensino Fundamental I</option>
-                  <option value="Ensino Fundamental II">Ensino Fundamental II</option>
-                  <option value="Ensino Médio">Ensino Médio</option>
-                  <option value="Licenciatura">Licenciatura</option>
-                  <option value="Graduação">Graduação</option>
-                  <option value="Pós-graduação">Pós-graduação</option>
-                  <option value="Mestrado">Mestrado</option>
-                  <option value="Doutorado">Doutorado</option>
-                  <option value="PHD">PHD</option>
-                </SelectForm>
-              </div>
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="large"
-                  type="text"
-                  placeholder="Instituto Federal do Rio Grande do Norte"
-                  title="Nome da Instituição*"
-                  id="nomeinstituicao"
-                  error={errors.nomeinstituicao?.message}
-                  register={register("nomeinstituicao")}
-                />
-              </div>
+              {schoolFields.map((school, index) => (
+                <div key={school.id} className={styles.fieldsContainer}>
+                  <div className={styles.inputContainer}>
+                    <SelectForm
+                      title="Tipo ou nível acadêmico*"
+                      id="position"
+                      register={register(`schoolEducation.${index}.position`)}
+                    >
+                      <option value="" disabled selected>Selecionar</option>
+                      <option value="Ensino Fundamental I">Ensino Fundamental I</option>
+                      <option value="Ensino Fundamental II">Ensino Fundamental II</option>
+                      <option value="Ensino Médio">Ensino Médio</option>
+                      <option value="Licenciatura">Licenciatura</option>
+                      <option value="Graduação">Graduação</option>
+                      <option value="Pós-graduação">Pós-graduação</option>
+                      <option value="Mestrado">Mestrado</option>
+                      <option value="Doutorado">Doutorado</option>
+                      <option value="PHD">PHD</option>
+                    </SelectForm>
+                  </div>
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="large"
-                  type="text"
-                  placeholder="Gerente de Vendas"
-                  title="Curso"
-                  id="curso"
-                  error={errors.curso?.message}
-                  register={register("curso")}
-                />
-              </div>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="large"
+                      type="text"
+                      placeholder="Instituto Federal do Rio Grande do Norte"
+                      title="Nome da Instituição*"
+                      id="schoolName"
+                      error={errors.schoolEducation?.[index]?.schoolName?.message}
+                      register={register(`schoolEducation.${index}.schoolName`)}
+                    />
+                  </div>
 
-              <div className={styles.inputContainer}>
-                <CheckboxForm
-                  id="namee"
-                >
-                  Experiência em andamento
-                </CheckboxForm>
-              </div>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="large"
+                      type="text"
+                      placeholder="Gerente de Vendas"
+                      title="Curso"
+                      id="curso"
+                      error={errors.schoolEducation?.[index]?.course?.message}
+                      register={register(`schoolEducation.${index}.course`)}
+                    />
+                  </div>
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="middle"
-                  type="date"
-                  placeholder="DD/MM/AAAA"
-                  title="Início*"
-                  id="beginExperience"
-                  error={errors.beginExperience?.message}
-                  register={register("beginExperience")}
-                />
+                  <div className={styles.inputContainer}>
+                    <div className={styles.checkbox} >
+                      <input
+                        type="checkbox"
+                        {...register(`schoolEducation.${index}.nowCoursing`)}
+                      />
+                      <label>
+                        Experiência em andamento
+                      </label>
+                    </div>
+                  </div>
 
-                <InputForm
-                  inputSize="middle"
-                  type="date"
-                  placeholder="DD/MM/AAAA"
-                  title="Término*"
-                  id="endExperience"
-                  error={errors.endExperience?.message}
-                  register={register("endExperience")}
-                />
-              </div>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="middle"
+                      type="date"
+                      placeholder="DD/MM/AAAA"
+                      title="Início*"
+                      id="startDate"
+                      error={errors.schoolEducation?.[index]?.startDate?.message}
+                      register={register(`schoolEducation.${index}.startDate`)}
+                    />
+
+                    <InputForm
+                      inputSize="middle"
+                      type="date"
+                      placeholder="DD/MM/AAAA"
+                      title="Término*"
+                      id="endDate"
+                      error={errors.schoolEducation?.[index]?.endDate?.message}
+                      register={register(`schoolEducation.${index}.endDate`)}
+                    />
+                  </div>
+                  <button onClick={() => (
+                    removeSchool(index)
+                  )}>Remover Formação</button>
+                  <div className={styles.line} />
+                </div>
+              ))}
+
+              <button onClick={() => (
+                appendSchool({})
+              )} className={styles.addButton}>
+                <FiPlusCircle size={48} />
+              </button>
 
             </>
           )}
 
           {step === 3 && (
             <>
+              {error && (
+                <div className={styles.error}>
+                  <span>{error}</span>
+                </div>
+              )}
               <h3>Curso de aperfeiçoamento</h3>
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="large"
-                  type="text"
-                  placeholder="Gerente de Vendas"
-                  title="Curso de aperfeiçoamento"
-                  id="cursodeaperfeicoamento"
-                  error={errors.cursodeaperfeicoamento?.message}
-                  register={register("cursodeaperfeicoamento")}
-                />
-              </div>
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="large"
-                  type="text"
-                  placeholder="Instituto Federal do Rio Grande do Norte"
-                  title="Nome da Instituição"
-                  id="nomedainstituicao"
-                  error={errors.nomeinstituicao?.message}
-                  register={register("nomedainstituicao")}
-                />
-              </div>
+              {coursesFields.map((course, index) => (
+                <div key={course.id} className={styles.fieldsContainer}>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="large"
+                      type="text"
+                      placeholder="Gerente de Vendas"
+                      title="Curso de aperfeiçoamento"
+                      id="courseName"
+                      error={errors.aditonalCourses?.[index]?.courseName?.message}
+                      register={register(`aditonalCourses.${index}.courseName`)}
+                    />
+                  </div>
 
-              <div className={styles.inputContainer}>
-                <SelectForm
-                  title="Nível de Conhecimento"
-                  id="nivelconhecimento"
-                  register={register("nivelconhecimento")}
-                >
-                  <option value="" disabled selected>Selecionar</option>
-                  <option value="Iniciante">Iniciante</option>
-                  <option value="Intermediario">Intermediário</option>
-                  <option value="Avançado">Avançado</option>
-                </SelectForm>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="large"
+                      type="text"
+                      placeholder="Instituto Federal do Rio Grande do Norte"
+                      title="Nome da Instituição"
+                      id="schoolName"
+                      error={errors.aditonalCourses?.[index]?.schoolName?.message}
+                      register={register(`aditonalCourses.${index}.schoolName`)}
+                    />
+                  </div>
 
-                <InputForm
-                  inputSize="middle"
-                  type="text"
-                  placeholder="20h"
-                  title="Carga horária"
-                  id="cargahoraria"
-                  error={errors.cargahoraria?.message}
-                  register={register("cargahoraria")}
-                />
-              </div>
+                  <div className={styles.inputContainer}>
+                    <SelectForm
+                      title="Nível de Conhecimento"
+                      id="level"
+                      register={register(`aditonalCourses.${index}.level`)}
+                    >
+                      <option value="" disabled selected>Selecionar</option>
+                      <option value="Iniciante">Iniciante</option>
+                      <option value="Intermediario">Intermediário</option>
+                      <option value="Avançado">Avançado</option>
+                    </SelectForm>
 
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="middle"
-                  type="date"
-                  placeholder="DD/MM/AAAA"
-                  title="Início*"
-                  id="beginCourse"
-                  error={errors.beginExperience?.message}
-                  register={register("beginCourse")}
-                />
+                    <InputForm
+                      inputSize="middle"
+                      type="text"
+                      placeholder="20h"
+                      title="Carga horária"
+                      id="cargahoraria"
+                      error={errors.aditonalCourses?.[index]?.totalTime?.message}
+                      register={register(`aditonalCourses.${index}.totalTime`)}
+                    />
+                  </div>
 
-                <InputForm
-                  inputSize="middle"
-                  type="date"
-                  placeholder="DD/MM/AAAA"
-                  title="Término*"
-                  id="endCourse"
-                  error={errors.endExperience?.message}
-                  register={register("endCourse")}
-                />
-              </div>
+                  <div className={styles.inputContainer}>
+                    <div className={styles.checkbox} >
+                      <input
+                        type="checkbox"
+                        {...register(`schoolEducation.${index}.nowCoursing`)}
+                      />
+                      <label>
+                        Experiência em andamento
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="middle"
+                      type="date"
+                      placeholder="DD/MM/AAAA"
+                      title="Início*"
+                      id="startDate"
+                      error={errors.aditonalCourses?.[index]?.startDate?.message}
+                      register={register(`aditonalCourses.${index}.startDate`)}
+                    />
+
+                    <InputForm
+                      inputSize="middle"
+                      type="date"
+                      placeholder="DD/MM/AAAA"
+                      title="Término*"
+                      id="endDate"
+                      error={errors.aditonalCourses?.[index]?.endDate?.message}
+                      register={register(`aditonalCourses.${index}.endDate`)}
+                    />
+                  </div>
+                  <button onClick={() => (
+                    removeCourses(index)
+                  )}>Remover Curso</button>
+                  <div className={styles.line} />
+                </div>
+              ))}
+
+              <button onClick={() => (
+                appendCourses({})
+              )} className={styles.addButton}>
+                <FiPlusCircle size={48} />
+              </button>
 
               <h3>Habilidades</h3>
-              <div className={styles.inputContainer}>
-                <InputForm
-                  inputSize="large"
-                  type="text"
-                  placeholder="Experiência em Photoshop"
-                  title="Nome da Habilidade, Tecnologia ou Ferramenta"
-                  id="nomehabilidade"
-                  error={errors.nomehabilidade?.message}
-                  register={register("nomehabilidade")}
-                />
-              </div>
 
-              <div className={styles.inputContainer}>
-                <SelectForm
-                  title="Nível de Conhecimento"
-                  id="nivelconhecimento"
-                  register={register("nivelconhecimento")}
-                >
-                  <option value="" disabled selected>Selecionar</option>
-                  <option value="Iniciante">Iniciante</option>
-                  <option value="Intermediario">Intermediário</option>
-                  <option value="Avançado">Avançado</option>
-                </SelectForm>
-              </div>
+              {abilityFields.map((ability, index) => (
+                <div key={ability.id} className={styles.fieldsContainer}>
+                  <div className={styles.inputContainer}>
+                    <InputForm
+                      inputSize="large"
+                      type="text"
+                      placeholder="Experiência em Photoshop"
+                      title="Nome da Habilidade, Tecnologia ou Ferramenta"
+                      id="name"
+                      error={errors.ability?.[index]?.name?.message}
+                      register={register(`ability.${index}.name`)}
+                    />
+                  </div>
+
+                  <div className={styles.inputContainer}>
+                    <SelectForm
+                      title="Nível de Conhecimento"
+                      id="level"
+                      register={register(`ability.${index}.level`)}
+                    >
+                      <option value="" disabled selected>Selecionar</option>
+                      <option value="Iniciante">Iniciante</option>
+                      <option value="Intermediario">Intermediário</option>
+                      <option value="Avançado">Avançado</option>
+                    </SelectForm>
+                  </div>
+
+                  <button onClick={() => (
+                    removeAbility(index)
+                  )}>Remover Habilidade</button>
+                  <div className={styles.line} />
+                </div>
+              ))}
+
+              <button onClick={() => (
+                appendAbility({})
+              )} className={styles.addButton}>
+                <FiPlusCircle size={48} />
+              </button>
             </>
           )}
 
           {step === 4 && (
             <>
-              <h3>Informações sobre a deficiência</h3>
+              {error && (
+                <div className={styles.error}>
+                  <span>{error}</span>
+                </div>
+              )}
+              <h3>Informações sobre deficiência</h3>
+
               <div className={styles.inputContainer}>
                 <InputForm
                   inputSize="small"
                   type="text"
                   placeholder="299.3"
-                  title="Número do CID:*"
-                  id="CID"
-                  error={errors.CID?.message}
-                  register={register("CID")}
+                  title="Número do CID:"
+                  id="cidNumber"
+                  error={errors.cidNumber?.message}
+                  register={register("cidNumber")}
                 />
 
                 <InputForm
                   inputSize="large"
                   type="text"
                   placeholder="Perda auditiva parcial"
-                  title="Grau de deficiência:*"
+                  title="Grau de deficiência:"
                   id="graudedeficiencia"
-                  error={errors.graudedeficiencia?.message}
-                  register={register("graudedeficiencia")}
+                  error={errors.deficiencyLevel?.message}
+                  register={register("deficiencyLevel")}
                 />
+              </div>
+
+              <div className={styles.inputContainer}>
+                <div className={styles.checkbox} >
+                  <input
+                    type="checkbox"
+                    {...register(`haveCertificate`)}
+                  />
+                  <label>
+                    Possuí certificado?
+                  </label>
+                </div>
               </div>
 
               <div className={styles.inputContainer}>
@@ -580,10 +864,10 @@ export default function Form() {
                   inputSize="large"
                   type="text"
                   placeholder="Não preciso de equipamento ou adaptações ou preciso de..."
-                  title="Equipamento ou adaptações necessárias* "
+                  title="Equipamento ou adaptações necessárias"
                   id="equipamento"
-                  error={errors.equipamento?.message}
-                  register={register("equipamento")}
+                  error={errors.addaptationDescription?.message}
+                  register={register("addaptationDescription")}
                 />
               </div>
 
@@ -592,10 +876,10 @@ export default function Form() {
                   inputSize="large"
                   type="text"
                   placeholder="Não tenho limitações cotidianas ou tenho limitações com..."
-                  title="Limitações cotidianas*"
+                  title="Limitações cotidianas"
                   id="limitacoes"
-                  error={errors.limitacoes?.message}
-                  register={register("limitacoes")}
+                  error={errors.limitationDescription?.message}
+                  register={register("limitationDescription")}
                 />
               </div>
 
@@ -604,10 +888,10 @@ export default function Form() {
                   inputSize="large"
                   type="text"
                   placeholder="Escreva aqui"
-                  title="Informações adicionais*"
+                  title="Informações adicionais"
                   id="infoadicionais"
-                  error={errors.infoadicionais?.message}
-                  register={register("infoadicionais")}
+                  error={errors.aditionalInformation?.message}
+                  register={register("aditionalInformation")}
                 />
               </div>
             </>
@@ -623,9 +907,29 @@ export default function Form() {
             />
             <div>
               {step > 0 && (
-                <button>VOLTAR</button>
+                <button onClick={() => setStep((step) => step - 1)}>VOLTAR</button>
               )}
-              <button type="submit" form="contentform">CONTINUAR</button>
+              {step < 4 ? (
+                <button onClick={async () => {
+                  const isFormValid = await trigger(undefined, {
+                    shouldFocus: true
+                  });
+
+                  if (!isFormValid) {
+                    return setError('Preencha corretamente para prosseguir.')
+                  }
+                  setStep((step) => step + 1)
+                  setError('')
+                }}>CONTINUAR</button>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={loading}
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  {loading ? 'Carregando...' : 'CRIAR CURRÍCULO'}
+                </button>
+              )}
             </div>
           </div>
         </div>

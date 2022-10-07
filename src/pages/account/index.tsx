@@ -60,7 +60,6 @@ export default function Account() {
         setError(err.response.data.message)
       }
       reset()
-      setError(null);
       setLoading(false);
     }
   };
