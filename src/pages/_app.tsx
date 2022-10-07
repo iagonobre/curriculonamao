@@ -9,14 +9,13 @@ import { LoadThemeProvider } from '../components/LoadThemeProvider';
 import { AuthContextProvider } from '../contexts/AuthContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const AnyComponent = Component as any;
 
   return (
     <ThemeContextProvider>
       <FontContextProvider>
         <AuthContextProvider>
           <LoadThemeProvider>
-            <AnyComponent {...pageProps} />
+            <Component {...pageProps} />
             <VLibras />
           </LoadThemeProvider>
         </AuthContextProvider>
