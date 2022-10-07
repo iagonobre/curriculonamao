@@ -12,7 +12,7 @@ export default function Privacy() {
           <h2>SEÇÃO 1</h2>
           <h3>INFORMAÇÕES GERAIS</h3>
           <p>
-            A presente Política de Privacidade contém informações sobre coleta, uso, armazenamento, tratamento e proteção dos dados pessoais dos usuários do website 'Currículo na Mão: geração de currículo com acessibilidade para pessoas com deficiência auditiva ou visual', com a finalidade de demonstrar absoluta transparência quanto ao assunto e esclarecer a todos interessados sobre os tipos de dados que são coletados, os motivos da coleta e a forma como os usuários podem gerenciar ou excluir as suas informações pessoais. Esta Política de Privacidade aplica-se a todos os usuários da plataforma. O documento poderá ser atualizado em decorrência de eventual atualização normativa, razão pela qual se convida o usuário a consultar periodicamente esta seção.
+            A presente Política de Privacidade contém informações sobre coleta, uso, armazenamento, tratamento e proteção dos dados pessoais dos usuários do website Currículo na Mão: geração de currículo com acessibilidade para pessoas com deficiência auditiva ou visual, com a finalidade de demonstrar absoluta transparência quanto ao assunto e esclarecer a todos interessados sobre os tipos de dados que são coletados, os motivos da coleta e a forma como os usuários podem gerenciar ou excluir as suas informações pessoais. Esta Política de Privacidade aplica-se a todos os usuários da plataforma. O documento poderá ser atualizado em decorrência de eventual atualização normativa, razão pela qual se convida o usuário a consultar periodicamente esta seção.
           </p>
 
           <h2>SEÇÃO 2</h2>
