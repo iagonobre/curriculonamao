@@ -1,18 +1,18 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
-import { AcessibilityScroll } from '../../../components/AccessibilityScroll';
-import { Button } from '../../../components/Button';
-import { Input } from '../../../components/Input';
-import { useAuth } from '../../../hooks/auth';
-import { withSSRAuth } from '../../../utils/withSSRAuth';
+import { AcessibilityScroll } from '../../../../components/AccessibilityScroll';
+import { Button } from '../../../../components/Button';
+import { Input } from '../../../../components/Input';
+import { useAuth } from '../../../../hooks/auth';
+import { withSSRAuth } from '../../../../utils/withSSRAuth';
 import styles from './perfil.module.scss';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { parseCookies } from 'nookies';
-import api from '../../../services/api';
+import api from '../../../../services/api';
 import Image from 'next/image';
 
 type UpdateProps = {

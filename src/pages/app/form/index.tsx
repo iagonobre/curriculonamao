@@ -65,6 +65,7 @@ export default function Form() {
         businessName: yup.string().required('O nome da empresa é obrigatório'),
         position: yup.string().required('Informar o cargo é obrigatório'),
         startDate: yup.date().required('A data é obrigatória'),
+        endDate: yup.date().optional(),
         description: yup.string().required('A descrição é obrigatória'),
       })
     ),
@@ -74,6 +75,7 @@ export default function Form() {
         schoolName: yup.string().required('O nome da instituição é obrigatório'),
         course: yup.string().required('O nome do curso é obrigatório'),
         startDate: yup.date().required('A data é obrigatória'),
+        endDate: yup.date().optional()
       })
     ),
     aditonalCourses: yup.array().of(
@@ -82,6 +84,7 @@ export default function Form() {
         schoolName: yup.string().required('O nome da escola é obrigatório'),
         totalTime: yup.string().required('A carga horária é obrigatória'),
         startDate: yup.date().required('A data inicial é obrigatória'),
+        endDate: yup.date().optional()
       })
     ),
     ability: yup.array().of(
@@ -557,7 +560,7 @@ export default function Form() {
               ))}
 
               <button onClick={() => (
-                appendExperiences({})
+                appendExperiences(null)
               )} className={styles.addButton}>
                 <FiPlusCircle size={48} />
               </button>
@@ -660,7 +663,7 @@ export default function Form() {
               ))}
 
               <button onClick={() => (
-                appendSchool({})
+                appendSchool(null)
               )} className={styles.addButton}>
                 <FiPlusCircle size={48} />
               </button>
@@ -767,7 +770,7 @@ export default function Form() {
               ))}
 
               <button onClick={() => (
-                appendCourses({})
+                appendCourses(null)
               )} className={styles.addButton}>
                 <FiPlusCircle size={48} />
               </button>
@@ -809,7 +812,7 @@ export default function Form() {
               ))}
 
               <button onClick={() => (
-                appendAbility({})
+                appendAbility(null)
               )} className={styles.addButton}>
                 <FiPlusCircle size={48} />
               </button>
