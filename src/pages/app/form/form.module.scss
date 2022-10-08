@@ -6,9 +6,11 @@
   grid-template-columns: 2fr 1.2fr;
   grid-gap: 4rem;
 
-  @media only screen and (max-device-width: 900px) {
+  @media (max-width: 600px) {
     grid-template-columns: 1fr;
-    grid-template-rows: 0.1fr 0.1fr;
+    grid-template-rows: 0.1fr 0rem;
+    grid-gap: 1rem;
+    padding: 0rem 5% 0rem 5%;
   }
 }
 
@@ -43,42 +45,55 @@
     margin-top: 8rem;
     height: 20rem;
     width: 100%;
+  }
 
-    div {
-      display: flex;
+  @media (max-width: 600px) {
+    div:first-child {
+      display: none;
+    }
+  }
+}
+
+
+.nextButtonContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    background: none;
+    border: none;
+  }
+
+  button:first-child {
+    margin-right: 2rem;
+    border: 2px solid var(--alert);
+    width: 8rem;
+    padding: 0.4rem 0rem;
+    border-radius: 8px;
+    color: var(--alert);
+    font-weight: bold;
+  }
+
+  button:last-child {
+    background: var(--primary);
+    border: 2px solid var(--primary);
+    width: 50%;
+    padding: 0.4rem 0rem;
+    border-radius: 8px;
+    color: var(--background);
+    font-weight: bold;
+  }
+
+  button:hover {
+    opacity: 0.6;
+  }
+
+  @media (max-width: 600px) {
+    button {
       width: 100%;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-
-      button {
-        background: none;
-        border: none;
-      }
-
-      button:first-child {
-        margin-right: 2rem;
-        border: 2px solid var(--alert);
-        width: 8rem;
-        padding: 0.4rem 0rem;
-        border-radius: 8px;
-        color: var(--alert);
-        font-weight: bold;
-      }
-
-      button:last-child {
-        background: var(--primary);
-        border: 2px solid var(--primary);
-        width: 50%;
-        padding: 0.4rem 0rem;
-        border-radius: 8px;
-        color: var(--background);
-        font-weight: bold;
-      }
-
-      button:hover {
-        opacity: 0.6;
-      }
     }
   }
 }
@@ -90,6 +105,15 @@
 
   div:first-child {
     margin-right: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    margin-bottom: 1.3rem;
+
+    label {
+      margin-top: 0.4rem;
+    }
   }
 }
 
@@ -109,6 +133,14 @@
     background-color: var(--shape);
     z-index: 1;
   }
+
+  @media (max-width: 600px) {
+    padding: 0rem 5% 0rem 5%;
+
+    span {
+      width: 80%;
+    }
+  }
 }
 
 
@@ -118,6 +150,10 @@
   margin-top: 0.5rem;
   text-align: center;
   color: var(--text);
+
+  @media (max-width: 600px) {
+    font-size: 0.8rem;
+  }
 }
 
 .stepBox {
@@ -174,20 +210,6 @@
   div {
     p {
       color: var(--light);
-    }
-  }
-}
-
-@media only screen and (max-device-width: 900px) {
-  .next {
-    svg {
-      display: none;
-    }
-
-    div {
-      margin: 0;
-      padding: 0;
-      height: 0;
     }
   }
 }

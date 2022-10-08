@@ -33,14 +33,14 @@ export type CvProps = {
 }
 
 export type Ability = {
-  id: number
+  id: number | null
   name: string
   level: string
   resumeId: number | null
 }
 
 export type AditionalCourses = {
-  id: number
+  id: number | null
   courseName: string
   schoolName: string
   level: string
@@ -48,33 +48,30 @@ export type AditionalCourses = {
   nowCoursing: boolean
   startDate: Date
   endDate: Date | null
-  resumeId: number
 }
 
 export type ProfessionalExperiences = {
-  id: number
+  id: number | null
   businessName: string
   position: string
   nowExperience: boolean
   startDate: Date
   endDate: Date | null
   description: string
-  resumeId: number
 }
 
 export type SchoolEducation = {
-  id: number
+  id: number | null
   position: string
   schoolName: string
   course: string
   nowCoursing: boolean
   startDate: Date
   endDate: Date | null
-  resumeId: number
 }
 
 export type Author = {
-  id: number
+  id: number | null
   createdAt: Date
   email: string
   activated: boolean

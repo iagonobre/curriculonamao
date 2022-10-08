@@ -64,9 +64,8 @@ export default function Form() {
       yup.object().shape({
         businessName: yup.string().required('O nome da empresa é obrigatório'),
         position: yup.string().required('Informar o cargo é obrigatório'),
-        startDate: yup.date().required('A data é obrigatória'),
-        endDate: yup.date().optional(),
         description: yup.string().required('A descrição é obrigatória'),
+        startDate: yup.date().required('A data é obrigatória'),
       })
     ),
     schoolEducation: yup.array().of(
@@ -75,7 +74,6 @@ export default function Form() {
         schoolName: yup.string().required('O nome da instituição é obrigatório'),
         course: yup.string().required('O nome do curso é obrigatório'),
         startDate: yup.date().required('A data é obrigatória'),
-        endDate: yup.date().optional()
       })
     ),
     aditonalCourses: yup.array().of(
@@ -84,7 +82,6 @@ export default function Form() {
         schoolName: yup.string().required('O nome da escola é obrigatório'),
         totalTime: yup.string().required('A carga horária é obrigatória'),
         startDate: yup.date().required('A data inicial é obrigatória'),
-        endDate: yup.date().optional()
       })
     ),
     ability: yup.array().of(
@@ -147,15 +144,6 @@ export default function Form() {
   });
 
   const onSubmit = async (data: CvProps) => {
-    if (Object.keys(errors).length > 0) {
-      return setError(
-        `Os seguintes campos não foram preenchidos:
-        ${Object.keys(errors).map((error) => {
-          console.log(error)
-        })}
-      `)
-    }
-
     try {
       setLoading(true);
       await refresh()
@@ -215,8 +203,6 @@ export default function Form() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      console.log(response.data)
-
       setLoading(false);
       setError(null);
       reset()
@@ -233,7 +219,6 @@ export default function Form() {
 
   return (
     <>
-      {console.log(errors)}
       <Header />
       <div className={styles.stepContainer}>
         <span />
@@ -649,7 +634,7 @@ export default function Form() {
                       inputSize="middle"
                       type="date"
                       placeholder="DD/MM/AAAA"
-                      title="Término*"
+                      title="Término"
                       id="endDate"
                       error={errors.schoolEducation?.[index]?.endDate?.message}
                       register={register(`schoolEducation.${index}.endDate`)}
@@ -756,7 +741,7 @@ export default function Form() {
                       inputSize="middle"
                       type="date"
                       placeholder="DD/MM/AAAA"
-                      title="Término*"
+                      title="Término"
                       id="endDate"
                       error={errors.aditonalCourses?.[index]?.endDate?.message}
                       register={register(`aditonalCourses.${index}.endDate`)}
@@ -908,32 +893,44 @@ export default function Form() {
                 animationData,
               }}
             />
-            <div>
-              {step > 0 && (
-                <button onClick={() => setStep((step) => step - 1)}>VOLTAR</button>
-              )}
-              {step < 4 ? (
-                <button onClick={async () => {
+          </div>
+          <div className={styles.nextButtonContainer}>
+            {step > 0 && (
+              <button
+                onClick={async () => {
                   const isFormValid = await trigger(undefined, {
                     shouldFocus: true
                   });
 
                   if (!isFormValid) {
-                    return setError('Preencha corretamente para prosseguir.')
+                    return setError('Preencha corretamente para voltar.')
                   }
-                  setStep((step) => step + 1)
+                  setStep((step) => step - 1)
                   setError('')
-                }}>CONTINUAR</button>
-              ) : (
-                <button
-                  type="submit"
-                  disabled={loading}
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  {loading ? 'Carregando...' : 'CRIAR CURRÍCULO'}
-                </button>
-              )}
-            </div>
+                }}>VOLTAR</button>
+            )}
+            {step < 4 ? (
+              <button onClick={async () => {
+                const isFormValid = await trigger(undefined, {
+                  shouldFocus: true
+                });
+
+                if (!isFormValid) {
+                  return setError('Preencha corretamente para prosseguir.')
+                }
+                setStep((step) => step + 1)
+                setError('')
+              }}>CONTINUAR</button>
+            ) : (
+              <button
+                type="submit"
+                disabled={loading}
+                onClick={handleSubmit(onSubmit)}
+              >
+                {loading ? 'Carregando...' : 'CRIAR CURRÍCULO'}
+              </button>
+            )}
+
           </div>
         </div>
       </div >
