@@ -26,7 +26,7 @@ export type CvProps = {
   limitationDescription: string | null
   aditionalInformation: string | null
   ability: Ability[]
-  aditonalCourses: AditionalCourses[]
+  aditionalCourses: AditionalCourses[]
   professionalExperiences: ProfessionalExperiences[]
   schoolEducation: SchoolEducation[]
   author: Author

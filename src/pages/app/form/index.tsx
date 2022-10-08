@@ -76,7 +76,7 @@ export default function Form() {
         startDate: yup.date().required('A data é obrigatória'),
       })
     ),
-    aditonalCourses: yup.array().of(
+    aditionalCourses: yup.array().of(
       yup.object().shape({
         courseName: yup.string().required('O curso é obrigatório'),
         schoolName: yup.string().required('O nome da escola é obrigatório'),
@@ -131,7 +131,7 @@ export default function Form() {
     append: appendCourses
   } = useFieldArray({
     control,
-    name: "aditonalCourses",
+    name: "aditionalCourses",
   });
 
   const {
@@ -172,7 +172,7 @@ export default function Form() {
         aditionalInformation
       } = data;
 
-      const response = await api.post('/cv', {
+      await api.post('/cv', {
         resume: {
           title,
           fullName,
@@ -197,7 +197,7 @@ export default function Form() {
         },
         professionalExperiences: data.professionalExperiences,
         schoolEducation: data.schoolEducation,
-        aditionalCourses: data.aditonalCourses,
+        aditionalCourses: data.aditionalCourses,
         ability: data.ability,
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -219,6 +219,7 @@ export default function Form() {
 
   return (
     <>
+      {console.log(errors)}
       <Header />
       <div className={styles.stepContainer}>
         <span />
@@ -346,7 +347,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <SelectForm
-                  title="Estado Civil*"
+                  title="Estado Civil"
                   id="maritalStatus"
                   register={register("maritalStatus")}
                 >
@@ -418,7 +419,7 @@ export default function Form() {
 
               <div className={styles.inputContainer}>
                 <SelectForm
-                  title="Estado*"
+                  title="Estado"
                   id="state"
                   register={register("state")}
                 >
@@ -674,8 +675,8 @@ export default function Form() {
                       placeholder="Gerente de Vendas"
                       title="Curso de aperfeiçoamento"
                       id="courseName"
-                      error={errors.aditonalCourses?.[index]?.courseName?.message}
-                      register={register(`aditonalCourses.${index}.courseName`)}
+                      error={errors.aditionalCourses?.[index]?.courseName?.message}
+                      register={register(`aditionalCourses.${index}.courseName`)}
                     />
                   </div>
 
@@ -686,8 +687,8 @@ export default function Form() {
                       placeholder="Instituto Federal do Rio Grande do Norte"
                       title="Nome da Instituição"
                       id="schoolName"
-                      error={errors.aditonalCourses?.[index]?.schoolName?.message}
-                      register={register(`aditonalCourses.${index}.schoolName`)}
+                      error={errors.aditionalCourses?.[index]?.schoolName?.message}
+                      register={register(`aditionalCourses.${index}.schoolName`)}
                     />
                   </div>
 
@@ -695,7 +696,7 @@ export default function Form() {
                     <SelectForm
                       title="Nível de Conhecimento"
                       id="level"
-                      register={register(`aditonalCourses.${index}.level`)}
+                      register={register(`aditionalCourses.${index}.level`)}
                     >
                       <option value="" disabled selected>Selecionar</option>
                       <option value="Iniciante">Iniciante</option>
@@ -709,8 +710,8 @@ export default function Form() {
                       placeholder="20h"
                       title="Carga horária"
                       id="cargahoraria"
-                      error={errors.aditonalCourses?.[index]?.totalTime?.message}
-                      register={register(`aditonalCourses.${index}.totalTime`)}
+                      error={errors.aditionalCourses?.[index]?.totalTime?.message}
+                      register={register(`aditionalCourses.${index}.totalTime`)}
                     />
                   </div>
 
@@ -718,7 +719,7 @@ export default function Form() {
                     <div className={styles.checkbox} >
                       <input
                         type="checkbox"
-                        {...register(`schoolEducation.${index}.nowCoursing`)}
+                        {...register(`aditionalCourses.${index}.nowCoursing`)}
                       />
                       <label>
                         Experiência em andamento
@@ -733,8 +734,8 @@ export default function Form() {
                       placeholder="DD/MM/AAAA"
                       title="Início*"
                       id="startDate"
-                      error={errors.aditonalCourses?.[index]?.startDate?.message}
-                      register={register(`aditonalCourses.${index}.startDate`)}
+                      error={errors.aditionalCourses?.[index]?.startDate?.message}
+                      register={register(`aditionalCourses.${index}.startDate`)}
                     />
 
                     <InputForm
@@ -743,8 +744,8 @@ export default function Form() {
                       placeholder="DD/MM/AAAA"
                       title="Término"
                       id="endDate"
-                      error={errors.aditonalCourses?.[index]?.endDate?.message}
-                      register={register(`aditonalCourses.${index}.endDate`)}
+                      error={errors.aditionalCourses?.[index]?.endDate?.message}
+                      register={register(`aditionalCourses.${index}.endDate`)}
                     />
                   </div>
                   <button onClick={() => (
