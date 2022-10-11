@@ -43,11 +43,11 @@ export default function Account() {
       reset()
       setSend(true)
     } catch (err) {
+      setSend(false)
       if (err.response.data.message) {
         setError(err.response.data.message)
       }
       reset()
-      setError(null);
       setLoading(false);
     }
   };
