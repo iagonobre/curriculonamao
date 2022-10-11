@@ -50,6 +50,8 @@ export default function HomeApp() {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
+      const delay = ms => new Promise(res => setTimeout(res, ms));
+      await delay(2000);
 
       push(`${process.env.NEXT_PUBLIC_API_URL}${downloadCV.data.uri}`)
 

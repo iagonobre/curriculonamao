@@ -1,7 +1,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost"],
+    domains: ["apicnm.iagonobre.com"],
     formats: ["image/webp"],
   },
 }
