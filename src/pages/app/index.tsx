@@ -53,7 +53,16 @@ export default function HomeApp() {
       const delay = ms => new Promise(res => setTimeout(res, ms));
       await delay(2000);
 
-      push(`${process.env.NEXT_PUBLIC_API_URL}${downloadCV.data.uri}`)
+      fetch('SamplePDF.pdf').then(response => {
+        response.blob().then(blob => {
+          // Creating new object of PDF file
+          const fileURL = `${process.env.NEXT_PUBLIC_API_URL}${downloadCV.data.uri}`
+          let alink = document.createElement('a');
+          alink.href = fileURL;
+          alink.download = 'SamplePDF.pdf';
+          alink.click();
+        })
+      })
 
       setLoading(false)
     } catch (err) {

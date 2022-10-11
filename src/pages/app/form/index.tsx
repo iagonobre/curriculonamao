@@ -86,7 +86,7 @@ export default function Form() {
     ),
     ability: yup.array().of(
       yup.object().shape({
-        name: yup.string().required('O nome é obrigatório'),
+        name: yup.string().required('O nome da habilidade é obrigatório').nullable(),
       })
     ),
     cidNumber: yup.string(),
@@ -763,6 +763,7 @@ export default function Form() {
 
               <h3>Habilidades</h3>
 
+
               {abilityFields.map((ability, index) => (
                 <div key={ability.id} className={styles.fieldsContainer}>
                   <div className={styles.inputContainer}>
@@ -771,7 +772,7 @@ export default function Form() {
                       type="text"
                       placeholder="Experiência em Photoshop"
                       title="Nome da Habilidade, Tecnologia ou Ferramenta"
-                      id="name"
+                      id="abilityname"
                       error={errors.ability?.[index]?.name?.message}
                       register={register(`ability.${index}.name`)}
                     />
