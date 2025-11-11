@@ -1,30 +1,30 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { FiArrowLeft } from 'react-icons/fi'
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { FiArrowLeft } from "react-icons/fi";
 
 import { AcessibilityScroll } from "../../components/AccessibilityScroll";
 import { AccountBox } from "../../components/AccountBox";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
-import { useAuth } from '../../hooks/auth';
-import { withSSRGuest } from '../../utils/withSSRGuest';
+import { useAuth } from "../../hooks/auth";
+import { withSSRGuest } from "../../utils/withSSRGuest";
 
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
-import styles from './account.module.scss';
+import styles from "./account.module.scss";
 
 type LoginProps = {
   email: string;
   password: string;
-}
+};
 
 export default function Account() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const { login } = useAuth();
 
   function handleGoBack() {
@@ -32,18 +32,26 @@ export default function Account() {
   }
 
   function handleNavigateToCreateAccount() {
-    router.push('/account/create');
+    router.push("/account/create");
   }
 
   const schema = yup.object({
-    email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatório'),
-    password: yup.string().required('A senha é obrigatória')
-  })
+    email: yup
+      .string()
+      .email("Precisa ser um e-mail válido")
+      .required("O e-mail é obrigatório"),
+    password: yup.string().required("A senha é obrigatória"),
+  });
 
-  const { reset, register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
-    mode: 'onBlur'
-  })
+    mode: "onBlur",
+  });
 
   const onSubmit = async (data: LoginProps) => {
     const email = data.email;
@@ -53,13 +61,13 @@ export default function Account() {
       setLoading(true);
       await login(email, password);
       setLoading(false);
-      reset()
+      reset();
       setError(null);
     } catch (err) {
       if (err.response.data.message) {
-        setError(err.response.data.message)
+        setError(err.response.data.message);
       }
-      reset()
+      reset();
       setLoading(false);
     }
   };
@@ -79,7 +87,7 @@ export default function Account() {
           </div>
         )}
 
-        <form id="contentform" onSubmit={handleSubmit(onSubmit)} >
+        <form id="contentform" onSubmit={handleSubmit(onSubmit)}>
           <Input
             type="email"
             id="email"
@@ -94,23 +102,30 @@ export default function Account() {
             error={errors.password?.message}
             register={register("password")}
           />
-          <Button type="submit" form="contentform" disabled={loading}>{loading ? 'ENTRANDO' : 'ENTRAR'}</Button>
+          <Button type="submit" form="contentform" disabled={loading}>
+            {loading ? "ENTRANDO" : "ENTRAR"}
+          </Button>
         </form>
 
-        <Button disabled={loading} styleType="outline" onClick={handleNavigateToCreateAccount}>CRIAR CONTA</Button>
+        <Button
+          disabled={loading}
+          styleType="outline"
+          onClick={handleNavigateToCreateAccount}
+        >
+          CRIAR CONTA
+        </Button>
         <div className={styles.recoveryStyle}>
-          <Link href="/recovery" >
+          <Link href="/recovery" legacyBehavior>
             <a className={styles.recoveryStyle}>Esqueceu sua senha</a>
           </Link>
         </div>
-
       </AccountBox>
     </div>
-  )
+  );
 }
 
 export const getServerSideProps = withSSRGuest(async () => {
   return {
-    props: {}
-  }
+    props: {},
+  };
 });

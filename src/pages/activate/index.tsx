@@ -1,13 +1,13 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { AcessibilityScroll } from "../../components/AccessibilityScroll";
 import { AccountBox } from "../../components/AccountBox";
-import { Button } from '../../components/Button';
-import api from '../../services/api';
+import { Button } from "../../components/Button";
+import api from "../../services/api";
 
-import styles from './activate.module.scss';
+import styles from "./activate.module.scss";
 
 export default function Account() {
   const router = useRouter();
@@ -15,25 +15,27 @@ export default function Account() {
   const token = router.query.token;
   const newToken = router.query.newToken;
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     async function activateAccount() {
       if (token && !error) {
         try {
-          await api.post('/user/activate', {
+          await api.post("/user/activate", {
             token,
             newEmail: newToken ? newToken : null,
-          })
-          setSuccess('A sua conta foi ativada com sucesso, realize o login no botão abaixo')
+          });
+          setSuccess(
+            "A sua conta foi ativada com sucesso, realize o login no botão abaixo"
+          );
         } catch (err) {
-          setError('Algum erro ocorreu e não foi possível ativar a sua conta.');
+          setError("Algum erro ocorreu e não foi possível ativar a sua conta.");
         }
       }
     }
-    activateAccount()
-  }, [error, token, newToken])
+    activateAccount();
+  }, [error, token, newToken]);
 
   return (
     <div className={styles.accountContainer}>
@@ -52,14 +54,17 @@ export default function Account() {
               </div>
             )
           )}
-          <img src="/assets/recovery.svg" alt="Mulher de cabelo preto segurando um avião" />
+          <img
+            src="/assets/recovery.svg"
+            alt="Mulher de cabelo preto segurando um avião"
+          />
           {error ? (
-            <Link href="/" passHref>
+            <Link href="/" passHref legacyBehavior>
               <Button styleType="outline">Página Inicial</Button>
             </Link>
           ) : (
             success && (
-              <Link href="/account" passHref>
+              <Link href="/account" passHref legacyBehavior>
                 <Button styleType="outline">Entrar</Button>
               </Link>
             )
@@ -67,5 +72,5 @@ export default function Account() {
         </div>
       </AccountBox>
     </div>
-  )
+  );
 }
