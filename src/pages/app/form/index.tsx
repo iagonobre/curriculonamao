@@ -1,92 +1,107 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import Lottie from 'react-lottie';
-import * as animationData from '../../../../public/typing.json'
+import dynamic from "next/dynamic";
+import * as animationData from "../../../../public/typing.json";
 
-import axios from 'axios';
+const Lottie = dynamic(() => import("react-lottie"), {
+  ssr: false,
+});
 
-import { yupResolver } from '@hookform/resolvers/yup';
+import axios from "axios";
+
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, useFieldArray } from "react-hook-form";
 import * as yup from "yup";
 
-import { withSSRAuth } from '../../../utils/withSSRAuth';
+import { withSSRAuth } from "../../../utils/withSSRAuth";
 
-import { Header } from '../../../components/Header';
-import { SelectForm } from '../../../components/SelectForm';
-import { InputForm } from '../../../components/InputForm';
+import { Header } from "../../../components/Header";
+import { SelectForm } from "../../../components/SelectForm";
+import { InputForm } from "../../../components/InputForm";
 
-import styles from './form.module.scss';
-import { CvProps } from '../../../dto/cvDTO';
-import { FiPlusCircle } from 'react-icons/fi';
-import api from '../../../services/api';
+import styles from "./form.module.scss";
+import { CvProps } from "../../../dto/cvDTO";
+import { FiPlusCircle } from "react-icons/fi";
+import api from "../../../services/api";
 
-import { useAuth } from '../../../hooks/auth';
-import Router from 'next/router';
-import { parseCookies } from 'nookies';
+import { useAuth } from "../../../hooks/auth";
+import Router from "next/router";
+import { parseCookies } from "nookies";
 
 type State = {
   id: number;
   sigla: string;
-}
+};
 
 export default function Form() {
   const [step, setStep] = useState(0);
   const [states, setStates] = useState<State[]>();
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const { refresh } = useAuth();
 
   useEffect(() => {
     async function getStates() {
-      await axios.get('https://brasilapi.com.br/api/ibge/uf/v1').then(({ data }) => {
-        setStates(data);
-      }).catch(() => {
-        // TRATAR ERRO
-      })
+      await axios
+        .get("https://brasilapi.com.br/api/ibge/uf/v1")
+        .then(({ data }) => {
+          setStates(data);
+        })
+        .catch(() => {
+          // TRATAR ERRO
+        });
     }
     getStates();
-  }, [])
+  }, []);
 
   const schema = yup.object({
-    title: yup.string().required('O nome do currículo é obrigatório'),
-    fullName: yup.string().required('O nome é obrigatório'),
-    bornDate: yup.date().required('A data é obrigatória'),
-    email: yup.string().email('Precisa ser um e-mail válido').required('O e-mail é obrigatório'),
-    phone: yup.string().required('O telefone é obrigatório'),
+    title: yup.string().required("O nome do currículo é obrigatório"),
+    fullName: yup.string().required("O nome é obrigatório"),
+    bornDate: yup.date().required("A data é obrigatória"),
+    email: yup
+      .string()
+      .email("Precisa ser um e-mail válido")
+      .required("O e-mail é obrigatório"),
+    phone: yup.string().required("O telefone é obrigatório"),
     linkedin: yup.string().url(),
     street: yup.string(),
-    district: yup.string().required('O bairro é obrigatório'),
-    city: yup.string().required('A cidade é obrigatório'),
+    district: yup.string().required("O bairro é obrigatório"),
+    city: yup.string().required("A cidade é obrigatório"),
     number: yup.string(),
     objetivo: yup.string(),
     professionalExperiences: yup.array().of(
       yup.object().shape({
-        businessName: yup.string().required('O nome da empresa é obrigatório'),
-        position: yup.string().required('Informar o cargo é obrigatório'),
-        description: yup.string().required('A descrição é obrigatória'),
-        startDate: yup.date().required('A data é obrigatória'),
+        businessName: yup.string().required("O nome da empresa é obrigatório"),
+        position: yup.string().required("Informar o cargo é obrigatório"),
+        description: yup.string().required("A descrição é obrigatória"),
+        startDate: yup.date().required("A data é obrigatória"),
       })
     ),
     schoolEducation: yup.array().of(
       yup.object().shape({
-        position: yup.string().required('O nível acadêmico é obrigatório'),
-        schoolName: yup.string().required('O nome da instituição é obrigatório'),
-        course: yup.string().required('O nome do curso é obrigatório'),
-        startDate: yup.date().required('A data é obrigatória'),
+        position: yup.string().required("O nível acadêmico é obrigatório"),
+        schoolName: yup
+          .string()
+          .required("O nome da instituição é obrigatório"),
+        course: yup.string().required("O nome do curso é obrigatório"),
+        startDate: yup.date().required("A data é obrigatória"),
       })
     ),
     aditionalCourses: yup.array().of(
       yup.object().shape({
-        courseName: yup.string().required('O curso é obrigatório'),
-        schoolName: yup.string().required('O nome da escola é obrigatório'),
-        totalTime: yup.string().required('A carga horária é obrigatória'),
-        startDate: yup.date().required('A data inicial é obrigatória'),
+        courseName: yup.string().required("O curso é obrigatório"),
+        schoolName: yup.string().required("O nome da escola é obrigatório"),
+        totalTime: yup.string().required("A carga horária é obrigatória"),
+        startDate: yup.date().required("A data inicial é obrigatória"),
       })
     ),
     ability: yup.array().of(
       yup.object().shape({
-        name: yup.string().required('O nome da habilidade é obrigatório').nullable(),
+        name: yup
+          .string()
+          .required("O nome da habilidade é obrigatório")
+          .nullable(),
       })
     ),
     cidNumber: yup.string(),
@@ -94,7 +109,7 @@ export default function Form() {
     addaptationDescription: yup.string(),
     limitationDescription: yup.string(),
     aditionalInformation: yup.string(),
-  })
+  });
 
   const {
     register,
@@ -102,15 +117,16 @@ export default function Form() {
     handleSubmit,
     reset,
     trigger,
-    formState: { errors } } = useForm<CvProps>({
-      resolver: yupResolver(schema),
-      mode: 'onChange'
-    })
+    formState: { errors },
+  } = useForm<CvProps>({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+  });
 
   const {
     fields: experienceFields,
     remove: removeExperiences,
-    append: appendExperiences
+    append: appendExperiences,
   } = useFieldArray({
     control,
     name: "professionalExperiences",
@@ -119,7 +135,7 @@ export default function Form() {
   const {
     fields: schoolFields,
     remove: removeSchool,
-    append: appendSchool
+    append: appendSchool,
   } = useFieldArray({
     control,
     name: "schoolEducation",
@@ -128,7 +144,7 @@ export default function Form() {
   const {
     fields: coursesFields,
     remove: removeCourses,
-    append: appendCourses
+    append: appendCourses,
   } = useFieldArray({
     control,
     name: "aditionalCourses",
@@ -137,7 +153,7 @@ export default function Form() {
   const {
     fields: abilityFields,
     remove: removeAbility,
-    append: appendAbility
+    append: appendAbility,
   } = useFieldArray({
     control,
     name: "ability",
@@ -146,8 +162,8 @@ export default function Form() {
   const onSubmit = async (data: CvProps) => {
     try {
       setLoading(true);
-      await refresh()
-      const { '@cnm:token': token } = parseCookies();
+      await refresh();
+      const { "@cnm:token": token } = parseCookies();
 
       const {
         title,
@@ -169,50 +185,54 @@ export default function Form() {
         haveCertificate,
         addaptationDescription,
         limitationDescription,
-        aditionalInformation
+        aditionalInformation,
       } = data;
 
-      await api.post('/cv', {
-        resume: {
-          title,
-          fullName,
-          bornDate,
-          email,
-          phone,
-          maritalStatus,
-          linkedin,
-          cep,
-          address,
-          district,
-          city,
-          state,
-          number: Number(number),
-          purpose,
-          cidNumber: Number(cidNumber),
-          deficiencyLevel,
-          haveCertificate,
-          addaptationDescription,
-          limitationDescription,
-          aditionalInformation
+      await api.post(
+        "/cv",
+        {
+          resume: {
+            title,
+            fullName,
+            bornDate,
+            email,
+            phone,
+            maritalStatus,
+            linkedin,
+            cep,
+            address,
+            district,
+            city,
+            state,
+            number: Number(number),
+            purpose,
+            cidNumber: Number(cidNumber),
+            deficiencyLevel,
+            haveCertificate,
+            addaptationDescription,
+            limitationDescription,
+            aditionalInformation,
+          },
+          professionalExperiences: data.professionalExperiences,
+          schoolEducation: data.schoolEducation,
+          aditionalCourses: data.aditionalCourses,
+          ability: data.ability,
         },
-        professionalExperiences: data.professionalExperiences,
-        schoolEducation: data.schoolEducation,
-        aditionalCourses: data.aditionalCourses,
-        ability: data.ability,
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setLoading(false);
       setError(null);
-      reset()
-      Router.push('/app')
+      reset();
+      Router.push("/app");
     } catch (err) {
       if (err.response.data.message) {
-        setError(err.response.data.message)
+        setError(err.response.data.message);
       }
-      reset()
-      Router.push('/app')
+      reset();
+      Router.push("/app");
       setLoading(false);
     }
   };
@@ -234,7 +254,9 @@ export default function Form() {
           </div>
         </div>
 
-        <div className={`${styles.stepBox} ${step < 1 && styles.stepBoxDisabled}`}>
+        <div
+          className={`${styles.stepBox} ${step < 1 && styles.stepBoxDisabled}`}
+        >
           <button>
             <div>
               <p>2</p>
@@ -245,7 +267,9 @@ export default function Form() {
           </div>
         </div>
 
-        <div className={`${styles.stepBox} ${step < 2 && styles.stepBoxDisabled}`}>
+        <div
+          className={`${styles.stepBox} ${step < 2 && styles.stepBoxDisabled}`}
+        >
           <button>
             <div>
               <p>3</p>
@@ -256,7 +280,9 @@ export default function Form() {
           </div>
         </div>
 
-        <div className={`${styles.stepBox} ${step < 3 && styles.stepBoxDisabled}`}>
+        <div
+          className={`${styles.stepBox} ${step < 3 && styles.stepBoxDisabled}`}
+        >
           <button>
             <div>
               <p>4</p>
@@ -267,7 +293,9 @@ export default function Form() {
           </div>
         </div>
 
-        <div className={`${styles.stepBox} ${step < 4 && styles.stepBoxDisabled}`}>
+        <div
+          className={`${styles.stepBox} ${step < 4 && styles.stepBoxDisabled}`}
+        >
           <button>
             <div>
               <p>5</p>
@@ -280,7 +308,11 @@ export default function Form() {
       </div>
 
       <div className={styles.container}>
-        <form id="contentform" className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <form
+          id="contentform"
+          className={styles.form}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           {step === 0 && (
             <>
               {error && (
@@ -351,7 +383,9 @@ export default function Form() {
                   id="maritalStatus"
                   register={register("maritalStatus")}
                 >
-                  <option value="" disabled selected>Selecionar</option>
+                  <option value="" disabled selected>
+                    Selecionar
+                  </option>
                   <option value="Solteiro">Solteiro</option>
                   <option value="Casado">Casado</option>
                   <option value="Separado">Separado</option>
@@ -371,7 +405,10 @@ export default function Form() {
               </div>
 
               <h3>Endereço</h3>
-              <p>Atenção! Alguns campos do endereço são optativos. Recomendamos o preenchimento apenas das informações necessárias.</p>
+              <p>
+                Atenção! Alguns campos do endereço são optativos. Recomendamos o
+                preenchimento apenas das informações necessárias.
+              </p>
 
               <div className={styles.inputContainer}>
                 <InputForm
@@ -423,9 +460,13 @@ export default function Form() {
                   id="state"
                   register={register("state")}
                 >
-                  <option value="" disabled selected>Selecionar</option>
+                  <option value="" disabled selected>
+                    Selecionar
+                  </option>
                   {states?.map((state) => (
-                    <option key={state.id} value={state.sigla}>{state.sigla}</option>
+                    <option key={state.id} value={state.sigla}>
+                      {state.sigla}
+                    </option>
                   ))}
                 </SelectForm>
 
@@ -441,7 +482,6 @@ export default function Form() {
               </div>
             </>
           )}
-
 
           {step === 1 && (
             <>
@@ -463,11 +503,14 @@ export default function Form() {
               )}
 
               <h3>Experiência Profissional</h3>
-              <p>Dica! Recomendamos que você escreva seus últimos três empregos ou as três experiências profissionais mais semelhantes ao seu objetivo atual.</p>
+              <p>
+                Dica! Recomendamos que você escreva seus últimos três empregos
+                ou as três experiências profissionais mais semelhantes ao seu
+                objetivo atual.
+              </p>
 
               {experienceFields.map((experience, index) => (
                 <div key={experience.id} className={styles.fieldsContainer}>
-
                   <div className={styles.inputContainer}>
                     <InputForm
                       inputSize="large"
@@ -475,8 +518,13 @@ export default function Form() {
                       placeholder="Márcio Calçados"
                       title="Nome da empresa*"
                       id="businessName"
-                      error={errors?.professionalExperiences?.[index]?.businessName?.message}
-                      register={register(`professionalExperiences.${index}.businessName`)}
+                      error={
+                        errors?.professionalExperiences?.[index]?.businessName
+                          ?.message
+                      }
+                      register={register(
+                        `professionalExperiences.${index}.businessName`
+                      )}
                     />
                   </div>
 
@@ -487,21 +535,26 @@ export default function Form() {
                       placeholder="Gerente de Vendas"
                       title="Cargo ou Posição*"
                       id="position"
-                      error={errors.professionalExperiences?.[index]?.position?.message}
-                      register={register(`professionalExperiences.${index}.position`)}
+                      error={
+                        errors.professionalExperiences?.[index]?.position
+                          ?.message
+                      }
+                      register={register(
+                        `professionalExperiences.${index}.position`
+                      )}
                     />
                   </div>
 
                   <div className={styles.inputContainer}>
-                    <div className={styles.checkbox} >
+                    <div className={styles.checkbox}>
                       <input
                         type="checkbox"
                         id="professionalExperiencesNowExperience"
-                        {...register(`professionalExperiences.${index}.nowExperience`)}
+                        {...register(
+                          `professionalExperiences.${index}.nowExperience`
+                        )}
                       />
-                      <label>
-                        Experiência em andamento
-                      </label>
+                      <label>Experiência em andamento</label>
                     </div>
                   </div>
 
@@ -512,8 +565,13 @@ export default function Form() {
                       placeholder="DD/MM/AAAA"
                       title="Início*"
                       id="startDate"
-                      error={errors.professionalExperiences?.[index]?.startDate?.message}
-                      register={register(`professionalExperiences.${index}.startDate`)}
+                      error={
+                        errors.professionalExperiences?.[index]?.startDate
+                          ?.message
+                      }
+                      register={register(
+                        `professionalExperiences.${index}.startDate`
+                      )}
                     />
 
                     <InputForm
@@ -522,8 +580,13 @@ export default function Form() {
                       placeholder="DD/MM/AAAA"
                       title="Fim"
                       id="endDate"
-                      error={errors.professionalExperiences?.[index]?.endDate?.message}
-                      register={register(`professionalExperiences.${index}.endDate`)}
+                      error={
+                        errors.professionalExperiences?.[index]?.endDate
+                          ?.message
+                      }
+                      register={register(
+                        `professionalExperiences.${index}.endDate`
+                      )}
                     />
                   </div>
 
@@ -534,23 +597,28 @@ export default function Form() {
                       placeholder="Descreva as atividades mais importantes que você exerceu"
                       title="Descrição:*"
                       id="description"
-                      error={errors.professionalExperiences?.[index]?.description?.message}
-                      register={register(`professionalExperiences.${index}.description`)}
+                      error={
+                        errors.professionalExperiences?.[index]?.description
+                          ?.message
+                      }
+                      register={register(
+                        `professionalExperiences.${index}.description`
+                      )}
                     />
                   </div>
-                  <button onClick={() => (
-                    removeExperiences(index)
-                  )}>Remover Experiência</button>
+                  <button onClick={() => removeExperiences(index)}>
+                    Remover Experiência
+                  </button>
                   <div className={styles.line} />
                 </div>
               ))}
 
-              <button onClick={() => (
-                appendExperiences(null)
-              )} className={styles.addButton}>
+              <button
+                onClick={() => appendExperiences(null)}
+                className={styles.addButton}
+              >
                 <FiPlusCircle size={48} />
               </button>
-
             </>
           )}
 
@@ -571,9 +639,15 @@ export default function Form() {
                       id="position"
                       register={register(`schoolEducation.${index}.position`)}
                     >
-                      <option value="" disabled selected>Selecionar</option>
-                      <option value="Ensino Fundamental I">Ensino Fundamental I</option>
-                      <option value="Ensino Fundamental II">Ensino Fundamental II</option>
+                      <option value="" disabled selected>
+                        Selecionar
+                      </option>
+                      <option value="Ensino Fundamental I">
+                        Ensino Fundamental I
+                      </option>
+                      <option value="Ensino Fundamental II">
+                        Ensino Fundamental II
+                      </option>
                       <option value="Ensino Médio">Ensino Médio</option>
                       <option value="Licenciatura">Licenciatura</option>
                       <option value="Graduação">Graduação</option>
@@ -591,7 +665,9 @@ export default function Form() {
                       placeholder="Instituto Federal do Rio Grande do Norte"
                       title="Nome da Instituição*"
                       id="schoolName"
-                      error={errors.schoolEducation?.[index]?.schoolName?.message}
+                      error={
+                        errors.schoolEducation?.[index]?.schoolName?.message
+                      }
                       register={register(`schoolEducation.${index}.schoolName`)}
                     />
                   </div>
@@ -609,14 +685,12 @@ export default function Form() {
                   </div>
 
                   <div className={styles.inputContainer}>
-                    <div className={styles.checkbox} >
+                    <div className={styles.checkbox}>
                       <input
                         type="checkbox"
                         {...register(`schoolEducation.${index}.nowCoursing`)}
                       />
-                      <label>
-                        Experiência em andamento
-                      </label>
+                      <label>Experiência em andamento</label>
                     </div>
                   </div>
 
@@ -627,7 +701,9 @@ export default function Form() {
                       placeholder="DD/MM/AAAA"
                       title="Início*"
                       id="startDate"
-                      error={errors.schoolEducation?.[index]?.startDate?.message}
+                      error={
+                        errors.schoolEducation?.[index]?.startDate?.message
+                      }
                       register={register(`schoolEducation.${index}.startDate`)}
                     />
 
@@ -641,19 +717,19 @@ export default function Form() {
                       register={register(`schoolEducation.${index}.endDate`)}
                     />
                   </div>
-                  <button onClick={() => (
-                    removeSchool(index)
-                  )}>Remover Formação</button>
+                  <button onClick={() => removeSchool(index)}>
+                    Remover Formação
+                  </button>
                   <div className={styles.line} />
                 </div>
               ))}
 
-              <button onClick={() => (
-                appendSchool(null)
-              )} className={styles.addButton}>
+              <button
+                onClick={() => appendSchool(null)}
+                className={styles.addButton}
+              >
                 <FiPlusCircle size={48} />
               </button>
-
             </>
           )}
 
@@ -675,8 +751,12 @@ export default function Form() {
                       placeholder="Gerente de Vendas"
                       title="Curso de aperfeiçoamento"
                       id="courseName"
-                      error={errors.aditionalCourses?.[index]?.courseName?.message}
-                      register={register(`aditionalCourses.${index}.courseName`)}
+                      error={
+                        errors.aditionalCourses?.[index]?.courseName?.message
+                      }
+                      register={register(
+                        `aditionalCourses.${index}.courseName`
+                      )}
                     />
                   </div>
 
@@ -687,8 +767,12 @@ export default function Form() {
                       placeholder="Instituto Federal do Rio Grande do Norte"
                       title="Nome da Instituição"
                       id="schoolName"
-                      error={errors.aditionalCourses?.[index]?.schoolName?.message}
-                      register={register(`aditionalCourses.${index}.schoolName`)}
+                      error={
+                        errors.aditionalCourses?.[index]?.schoolName?.message
+                      }
+                      register={register(
+                        `aditionalCourses.${index}.schoolName`
+                      )}
                     />
                   </div>
 
@@ -698,7 +782,9 @@ export default function Form() {
                       id="level"
                       register={register(`aditionalCourses.${index}.level`)}
                     >
-                      <option value="" disabled selected>Selecionar</option>
+                      <option value="" disabled selected>
+                        Selecionar
+                      </option>
                       <option value="Iniciante">Iniciante</option>
                       <option value="Intermediario">Intermediário</option>
                       <option value="Avançado">Avançado</option>
@@ -710,20 +796,20 @@ export default function Form() {
                       placeholder="20h"
                       title="Carga horária"
                       id="cargahoraria"
-                      error={errors.aditionalCourses?.[index]?.totalTime?.message}
+                      error={
+                        errors.aditionalCourses?.[index]?.totalTime?.message
+                      }
                       register={register(`aditionalCourses.${index}.totalTime`)}
                     />
                   </div>
 
                   <div className={styles.inputContainer}>
-                    <div className={styles.checkbox} >
+                    <div className={styles.checkbox}>
                       <input
                         type="checkbox"
                         {...register(`aditionalCourses.${index}.nowCoursing`)}
                       />
-                      <label>
-                        Experiência em andamento
-                      </label>
+                      <label>Experiência em andamento</label>
                     </div>
                   </div>
 
@@ -734,7 +820,9 @@ export default function Form() {
                       placeholder="DD/MM/AAAA"
                       title="Início*"
                       id="startDate"
-                      error={errors.aditionalCourses?.[index]?.startDate?.message}
+                      error={
+                        errors.aditionalCourses?.[index]?.startDate?.message
+                      }
                       register={register(`aditionalCourses.${index}.startDate`)}
                     />
 
@@ -748,21 +836,21 @@ export default function Form() {
                       register={register(`aditionalCourses.${index}.endDate`)}
                     />
                   </div>
-                  <button onClick={() => (
-                    removeCourses(index)
-                  )}>Remover Curso</button>
+                  <button onClick={() => removeCourses(index)}>
+                    Remover Curso
+                  </button>
                   <div className={styles.line} />
                 </div>
               ))}
 
-              <button onClick={() => (
-                appendCourses(null)
-              )} className={styles.addButton}>
+              <button
+                onClick={() => appendCourses(null)}
+                className={styles.addButton}
+              >
                 <FiPlusCircle size={48} />
               </button>
 
               <h3>Habilidades</h3>
-
 
               {abilityFields.map((ability, index) => (
                 <div key={ability.id} className={styles.fieldsContainer}>
@@ -784,23 +872,26 @@ export default function Form() {
                       id="level"
                       register={register(`ability.${index}.level`)}
                     >
-                      <option value="" disabled selected>Selecionar</option>
+                      <option value="" disabled selected>
+                        Selecionar
+                      </option>
                       <option value="Iniciante">Iniciante</option>
                       <option value="Intermediario">Intermediário</option>
                       <option value="Avançado">Avançado</option>
                     </SelectForm>
                   </div>
 
-                  <button onClick={() => (
-                    removeAbility(index)
-                  )}>Remover Habilidade</button>
+                  <button onClick={() => removeAbility(index)}>
+                    Remover Habilidade
+                  </button>
                   <div className={styles.line} />
                 </div>
               ))}
 
-              <button onClick={() => (
-                appendAbility(null)
-              )} className={styles.addButton}>
+              <button
+                onClick={() => appendAbility(null)}
+                className={styles.addButton}
+              >
                 <FiPlusCircle size={48} />
               </button>
             </>
@@ -838,14 +929,9 @@ export default function Form() {
               </div>
 
               <div className={styles.inputContainer}>
-                <div className={styles.checkbox} >
-                  <input
-                    type="checkbox"
-                    {...register(`haveCertificate`)}
-                  />
-                  <label>
-                    Possuí certificado?
-                  </label>
+                <div className={styles.checkbox}>
+                  <input type="checkbox" {...register(`haveCertificate`)} />
+                  <label>Possuí certificado?</label>
                 </div>
               </div>
 
@@ -886,7 +972,6 @@ export default function Form() {
               </div>
             </>
           )}
-
         </form>
         <div className={styles.next}>
           <div>
@@ -901,47 +986,53 @@ export default function Form() {
               <button
                 onClick={async () => {
                   const isFormValid = await trigger(undefined, {
-                    shouldFocus: true
+                    shouldFocus: true,
                   });
 
                   if (!isFormValid) {
-                    return setError('Preencha corretamente para voltar.')
+                    return setError("Preencha corretamente para voltar.");
                   }
-                  setStep((step) => step - 1)
-                  setError('')
-                }}>VOLTAR</button>
+                  setStep((step) => step - 1);
+                  setError("");
+                }}
+              >
+                VOLTAR
+              </button>
             )}
             {step < 4 ? (
-              <button onClick={async () => {
-                const isFormValid = await trigger(undefined, {
-                  shouldFocus: true
-                });
+              <button
+                onClick={async () => {
+                  const isFormValid = await trigger(undefined, {
+                    shouldFocus: true,
+                  });
 
-                if (!isFormValid) {
-                  return setError('Preencha corretamente para prosseguir.')
-                }
-                setStep((step) => step + 1)
-                setError('')
-              }}>CONTINUAR</button>
+                  if (!isFormValid) {
+                    return setError("Preencha corretamente para prosseguir.");
+                  }
+                  setStep((step) => step + 1);
+                  setError("");
+                }}
+              >
+                CONTINUAR
+              </button>
             ) : (
               <button
                 type="submit"
                 disabled={loading}
                 onClick={handleSubmit(onSubmit)}
               >
-                {loading ? 'Carregando...' : 'CRIAR CURRÍCULO'}
+                {loading ? "Carregando..." : "CRIAR CURRÍCULO"}
               </button>
             )}
-
           </div>
         </div>
-      </div >
+      </div>
     </>
-  )
+  );
 }
 
 export const getServerSideProps = withSSRAuth(async () => {
   return {
-    props: {}
-  }
+    props: {},
+  };
 });
