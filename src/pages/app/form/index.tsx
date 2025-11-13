@@ -32,7 +32,8 @@ import { FieldPath } from "react-hook-form";
 import { setLocale } from "yup";
 
 import * as pt from "yup-locale-pt";
-import { maskCep, maskPhone } from "./masks";
+import { maskCep, maskPhone } from "../../../utils/masks";
+
 setLocale(pt.pt);
 
 type State = {
