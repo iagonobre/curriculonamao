@@ -27,6 +27,13 @@ import api from "../../../services/api";
 import { useAuth } from "../../../hooks/auth";
 import Router from "next/router";
 import { parseCookies } from "nookies";
+import { FieldPath } from "react-hook-form";
+
+import { setLocale } from "yup";
+
+import * as pt from "yup-locale-pt";
+import { maskCep, maskPhone } from "./masks";
+setLocale(pt.pt);
 
 type State = {
   id: number;
@@ -120,7 +127,13 @@ export default function Form() {
     formState: { errors },
   } = useForm<CvProps>({
     resolver: yupResolver(schema),
-    mode: "onChange",
+    mode: "onBlur",
+    defaultValues: {
+      professionalExperiences: [],
+      schoolEducation: [],
+      aditionalCourses: [],
+      ability: [],
+    },
   });
 
   const {
@@ -227,15 +240,29 @@ export default function Form() {
       setError(null);
       reset();
       Router.push("/app");
-    } catch (err) {
-      if (err.response.data.message) {
-        setError(err.response.data.message);
-      }
-      reset();
-      Router.push("/app");
+    } catch (err: any) {
       setLoading(false);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Ocorreu um erro ao enviar o formulário.");
+      }
     }
   };
+
+  const stepFields: FieldPath<CvProps>[][] = [
+    ["title", "fullName", "bornDate", "email", "phone", "district", "city"],
+    ["purpose", "professionalExperiences"],
+    ["schoolEducation"],
+    ["aditionalCourses", "ability"],
+    [
+      "cidNumber",
+      "deficiencyLevel",
+      "addaptationDescription",
+      "limitationDescription",
+      "aditionalInformation",
+    ],
+  ];
 
   return (
     <>
@@ -373,7 +400,7 @@ export default function Form() {
                   title="Telefone*"
                   id="phone"
                   error={errors.phone?.message}
-                  register={register("phone")}
+                  register={register("phone", { onChange: maskPhone })}
                 />
               </div>
 
@@ -418,7 +445,7 @@ export default function Form() {
                   title="CEP"
                   id="cep"
                   error={errors.cep?.message}
-                  register={register("cep")}
+                  register={register("cep", { onChange: maskCep })}
                 />
 
                 <InputForm
@@ -614,6 +641,7 @@ export default function Form() {
               ))}
 
               <button
+                type="button"
                 onClick={() => appendExperiences(null)}
                 className={styles.addButton}
               >
@@ -725,6 +753,7 @@ export default function Form() {
               ))}
 
               <button
+                type="button"
                 onClick={() => appendSchool(null)}
                 className={styles.addButton}
               >
@@ -844,6 +873,7 @@ export default function Form() {
               ))}
 
               <button
+                type="button"
                 onClick={() => appendCourses(null)}
                 className={styles.addButton}
               >
@@ -889,6 +919,7 @@ export default function Form() {
               ))}
 
               <button
+                type="button"
                 onClick={() => appendAbility(null)}
                 className={styles.addButton}
               >
@@ -985,33 +1016,32 @@ export default function Form() {
           <div className={styles.nextButtonContainer}>
             {step > 0 && (
               <button
-                onClick={async () => {
-                  const isFormValid = await trigger(undefined, {
-                    shouldFocus: true,
-                  });
-
-                  if (!isFormValid) {
-                    return setError("Preencha corretamente para voltar.");
-                  }
-                  setStep((step) => step - 1);
+                type="button"
+                onClick={() => {
+                  setStep((s) => s - 1);
                   setError("");
                 }}
               >
                 VOLTAR
               </button>
             )}
+
             {step < 4 ? (
               <button
+                type="button"
                 onClick={async () => {
-                  const isFormValid = await trigger(undefined, {
+                  const currentStepFields = stepFields[step];
+                  const isValid = await trigger(currentStepFields, {
                     shouldFocus: true,
                   });
 
-                  if (!isFormValid) {
-                    return setError("Preencha corretamente para prosseguir.");
+                  if (!isValid) {
+                    setError("Preencha corretamente para prosseguir.");
+                    return;
                   }
-                  setStep((step) => step + 1);
+
                   setError("");
+                  setStep((s) => s + 1);
                 }}
               >
                 CONTINUAR
