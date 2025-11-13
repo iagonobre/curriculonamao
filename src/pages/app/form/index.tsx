@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
+const Player = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((m) => m.Player),
+  { ssr: false }
+);
 import animationData from "../../../../public/typing.json";
 
 import axios from "axios";
