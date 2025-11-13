@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 
-import dynamic from "next/dynamic";
-import * as animationData from "../../../../public/typing.json";
-
-const Lottie = dynamic(() => import("react-lottie"), {
-  ssr: false,
-});
+import { Player } from "@lottiefiles/react-lottie-player";
+import animationData from "../../../../public/typing.json";
 
 import axios from "axios";
 
@@ -975,10 +971,11 @@ export default function Form() {
         </form>
         <div className={styles.next}>
           <div>
-            <Lottie
-              options={{
-                animationData,
-              }}
+            <Player
+              autoplay
+              loop
+              src={animationData}
+              style={{ height: "140px", width: "140px" }}
             />
           </div>
           <div className={styles.nextButtonContainer}>
